@@ -6,5 +6,6 @@
 --ignore=setup.sh
 --ignore=\.git
 --ignore=\.gitignore
+--ignore=\.planning
 --ignore=tuios
 --ignore=pi
