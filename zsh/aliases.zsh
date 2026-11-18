@@ -5,6 +5,7 @@ alias tree="eza --tree --icons"
 alias diff="diff --color=auto"
 alias b="bat"
 alias k="kubectl"
+alias t="tuios attach"
 
 alias -s json="jless"
 

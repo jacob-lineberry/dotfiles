@@ -2,21 +2,47 @@
 theme = Catppuccin Mocha
 palette = 4=#f5c2e7
 palette = 12=#f5c2e7
+minimum-contrast = 1.1
 
 # Font
 font-family = "Maple Mono NF"
 font-style = Italic
 font-size = 16
+font-feature = zero
+adjust-cell-height = 10%
 
 # Window
 background-opacity = 0.85
 background-opacity-cells = true
-background-blur-radius = 20
+background-blur = macos-glass-regular
 window-padding-x = 14
 window-padding-y = 14
+window-padding-balance = true
+window-padding-color = extend
+macos-titlebar-style = transparent
+window-save-state = always
 confirm-close-surface = false
 resize-overlay = never
 mouse-hide-while-typing = true
+
+# Splits
+unfocused-split-opacity = 0.85
+split-divider-color = #585b70
+
+# Omarchy-style: super+return opens a new terminal window in the current directory
+keybind = cmd+enter=new_window
+
+# Quick terminal (global hotkey needs Accessibility permission)
+keybind = global:cmd+ctrl+enter=toggle_quick_terminal
+quick-terminal-position = top
+quick-terminal-size = 50%,1500px
+quick-terminal-screen = mouse
+quick-terminal-autohide = true
+
+# Notify when long commands finish in an unfocused tab
+notify-on-command-finish = unfocused
+notify-on-command-finish-after = 30s
+notify-on-command-finish-action = bell,notify
 
 # Cursor styling
 cursor-style = "block"
@@ -24,4 +50,3 @@ cursor-style-blink = false
 
 # Cursor styling + SSH session terminfo
 shell-integration-features = no-cursor,ssh-env
-
