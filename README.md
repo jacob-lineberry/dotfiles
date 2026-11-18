@@ -7,13 +7,16 @@ Per-app configs, symlinked into `~/.config` with [GNU Stow](https://www.gnu.org/
 | `zsh`      | `~/.config/zsh` (via `ZDOTDIR`)                |
 | `nvim`     | `~/.config/nvim`                               |
 | `starship` | `~/.config/starship/starship.toml`             |
+| `fastfetch`| `~/.config/fastfetch/config.jsonc`            |
 | `ghostty`  | `~/.config/ghostty`                            |
 | `bat`      | `~/.config/bat`                                |
+| `btop`     | `~/.config/btop`                               |
 | `eza`      | `~/.config/eza`                                |
 | `k9s`      | `~/.config/k9s`                                |
 | `homebrew` | `~/.config/homebrew/Brewfile`                  |
 | `lazygit`  | `~/.config/lazygit/config.yml`                |
 | `mise`     | `~/.config/mise/config.toml`                   |
+| `yazi`     | `~/.config/yazi`                               |
 | `tuios`    | `~/Library/Application Support/tuios` (macOS)  |
 | `pi`       | `~/.pi/agent/settings.json` (seeded if absent) |
 

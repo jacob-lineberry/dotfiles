@@ -3,6 +3,8 @@ alias ll="eza -lah --icons --git"
 alias tree="eza --tree --icons"
 
 alias diff="diff --color=auto"
+alias df="duf"
+alias du="dust"
 alias b="bat"
 alias k="kubectl"
 alias t="tuios attach"

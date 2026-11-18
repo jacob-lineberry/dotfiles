@@ -5,12 +5,20 @@
 brew "awscli"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
+# Resource monitor. C++ version and continuation of bashtop and bpytop
+brew "btop"
 # Load/unload environment variables based on $PWD
 brew "direnv"
 # Pack, ship and run any application as a lightweight container
 brew "docker"
+# Disk Usage/Free Utility - a better 'df' alternative
+brew "duf"
+# More intuitive version of du in rust
+brew "dust"
 # Modern, maintained replacement for ls
 brew "eza"
+# Like neofetch, but much faster because written mostly in C
+brew "fastfetch"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
 # Command-line fuzzy finder written in Go
@@ -29,8 +37,12 @@ brew "gitleaks"
 brew "gnupg"
 # Open source programming language to build simple/reliable/efficient software
 brew "go"
+# Command-line benchmarking tool
+brew "hyperfine"
 # Command-line pager for JSON data
 brew "jless"
+# Handy way to save and run project-specific commands
+brew "just"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 # Kubernetes CLI To Manage Your Clusters In Style!
@@ -65,6 +77,8 @@ brew "starship"
 brew "stow"
 # Terminal multiplexer
 brew "tmux"
+# Official tldr client written in Rust
+brew "tlrc"
 # Generic Python virtualenv management and test command-line tool
 brew "tox"
 # Display directories as trees (with optional color/HTML output)
@@ -77,6 +91,8 @@ brew "ty"
 brew "uv"
 # Executes a program periodically, showing output fullscreen
 brew "watch"
+# Blazing fast terminal file manager written in Rust, based on async I/O
+brew "yazi"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
 # Fish-like fast/unobtrusive autosuggestions for zsh

@@ -7,5 +7,8 @@
 --ignore=[.]git
 --ignore=[.]gitignore
 --ignore=[.]planning
+--ignore=findings[.]md
+--ignore=progress[.]md
+--ignore=task_plan[.]md
 --ignore=tuios
 --ignore=pi
