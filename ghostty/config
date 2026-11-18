@@ -1,0 +1,27 @@
+# Theme
+theme = Catppuccin Mocha
+palette = 4=#f5c2e7
+palette = 12=#f5c2e7
+
+# Font
+font-family = "Maple Mono NF"
+font-style = Italic
+font-size = 16
+
+# Window
+background-opacity = 0.85
+background-opacity-cells = true
+background-blur-radius = 20
+window-padding-x = 14
+window-padding-y = 14
+confirm-close-surface = false
+resize-overlay = never
+mouse-hide-while-typing = true
+
+# Cursor styling
+cursor-style = "block"
+cursor-style-blink = false
+
+# Cursor styling + SSH session terminfo
+shell-integration-features = no-cursor,ssh-env
+

@@ -1,0 +1,23 @@
+{
+  "bg": "#1e1e2e",
+  "black": "#45475a",
+  "blue": "#f5c2e7",
+  "bright_black": "#585b70",
+  "bright_blue": "#f5c2e7",
+  "bright_cyan": "#6bd7ca",
+  "bright_green": "#89d88b",
+  "bright_purple": "#f2aede",
+  "bright_red": "#f37799",
+  "bright_white": "#bac2de",
+  "bright_yellow": "#ebd391",
+  "cursor": "#f5e0dc",
+  "cyan": "#94e2d5",
+  "dark": true,
+  "fg": "#cdd6f4",
+  "green": "#a6e3a1",
+  "id": "catppuccin mocha",
+  "purple": "#cba6f7",
+  "red": "#f38ba8",
+  "white": "#a6adc8",
+  "yellow": "#f9e2af"
+}

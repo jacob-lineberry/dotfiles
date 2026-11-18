@@ -1,0 +1,21 @@
+{
+  "lastChangelogVersion": "1.5.2",
+  "theme": "catppuccin-tui-macchiato",
+  "packages": [
+    "npm:context-mode",
+    "npm:pi-hud",
+    "npm:pi-subagents",
+    "npm:pi-web-access",
+    "npm:@hypabolic/pi-hypa",
+    "npm:@tomxprime/planning-with-files",
+    "npm:pi-catppuccin-tui"
+  ],
+  "defaultThinkingLevel": "high",
+  "editorPaddingX": 1,
+  "extensions": [
+    "+builtin:mcp"
+  ],
+  "planningWithFiles": {
+    "mode": "notify"
+  }
+}

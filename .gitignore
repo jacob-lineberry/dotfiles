@@ -1,0 +1,10 @@
+.DS_Store
+*.pem
+*.crt
+*.key
+*.local
+*.log
+.zsh_history
+k9s/clusters/
+k9s/benchmarks/
+k9s/screen-dumps/
