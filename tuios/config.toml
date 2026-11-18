@@ -126,3 +126,6 @@ session_colors = false
 
 [appearance.sidebar]
 file_icon_colors = true
+
+[spotlight]
+enabled = false
