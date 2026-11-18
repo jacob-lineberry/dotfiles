@@ -12,6 +12,7 @@ Per-app configs, symlinked into `~/.config` with [GNU Stow](https://www.gnu.org/
 | `eza`      | `~/.config/eza`                                |
 | `k9s`      | `~/.config/k9s`                                |
 | `homebrew` | `~/.config/homebrew/Brewfile`                  |
+| `lazygit`  | `~/.config/lazygit/config.yml`                |
 | `mise`     | `~/.config/mise/config.toml`                   |
 | `tuios`    | `~/Library/Application Support/tuios` (macOS)  |
 | `pi`       | `~/.pi/agent/settings.json` (seeded if absent) |

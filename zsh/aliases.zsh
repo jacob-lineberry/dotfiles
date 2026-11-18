@@ -6,6 +6,7 @@ alias diff="diff --color=auto"
 alias b="bat"
 alias k="kubectl"
 alias t="tuios attach"
+alias lg="lazygit"
 
 alias -s json="jless"
 
