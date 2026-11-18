@@ -33,9 +33,10 @@ split-divider-color = #585b70
 keybind = cmd+enter=new_window
 
 # Quick terminal (global hotkey needs Accessibility permission)
+# For center on landscape: primary = width, secondary = height
 keybind = global:cmd+ctrl+enter=toggle_quick_terminal
-quick-terminal-position = top
-quick-terminal-size = 50%,1500px
+quick-terminal-position = center
+quick-terminal-size = 1600px,700px
 quick-terminal-screen = mouse
 quick-terminal-autohide = true
 
