@@ -23,7 +23,7 @@ git clone https://github.com/jacob-lineberry/dotfiles ~/dotfiles
 cd ~/dotfiles && ./setup.sh
 ```
 
-`setup.sh` moves any conflicting existing file into `~/.dotfiles-backup/<timestamp>/`, runs `stow .`, writes `~/.zshenv` (sets `ZDOTDIR`) if missing, and links the apps that do not read `~/.config`. It is safe to re-run. Pass `--brew` to also install the packages in `homebrew/Brewfile` (and `~/.corp/Brewfile`, if present).
+`setup.sh` moves any conflicting existing file into `~/.dotfiles-backup/<timestamp>/`, runs `stow .`, writes `~/.zshenv` (sets `ZDOTDIR` and sources `zsh/.zshenv`) if missing, and links the apps that do not read `~/.config`. It is safe to re-run. Pass `--brew` to also install the packages in `homebrew/Brewfile` (and `~/.corp/Brewfile`, if present).
 
 `.stowrc` uses `--no-folding`, so only individual files are linked and runtime files (shell history, k9s state) stay out of the repo.
 

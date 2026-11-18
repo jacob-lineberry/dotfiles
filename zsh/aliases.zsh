@@ -2,7 +2,6 @@ alias ls="eza --icons"
 alias ll="eza -lah --icons --git"
 alias tree="eza --tree --icons"
 
-alias grep="rg --color=auto"
 alias diff="diff --color=auto"
 alias b="bat"
 alias k="kubectl"

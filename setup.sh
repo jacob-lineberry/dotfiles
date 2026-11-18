@@ -7,6 +7,7 @@ TARGET="$HOME/.config"
 BACKUP="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
 
 command -v stow >/dev/null || { echo "stow not found (brew install stow)" >&2; exit 1; }
+mkdir -p "$TARGET"
 
 # Move anything at $2 that is not already $1 into the backup dir.
 backup_unless_linked() {
@@ -27,6 +28,8 @@ link() {
 # zsh finds its config via ZDOTDIR, which has to be set from $HOME/.zshenv
 # shellcheck disable=SC2016
 [[ -e $HOME/.zshenv ]] || printf 'export ZDOTDIR="$HOME/.config/zsh"\n' > "$HOME/.zshenv"
+# shellcheck disable=SC2016
+grep -q 'ZDOTDIR/.zshenv' "$HOME/.zshenv" || printf '[[ -r $ZDOTDIR/.zshenv ]] && source $ZDOTDIR/.zshenv\n' >> "$HOME/.zshenv"
 
 # Stowed packages: every top-level folder except those ignored in .stowrc
 while IFS= read -r -d '' src; do
