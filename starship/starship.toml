@@ -2,7 +2,9 @@ palette = "catppuccin_mocha"
 
 add_newline = true
 command_timeout = 200
-format = "[$directory$git_branch$git_status]($style)$character"
+scan_timeout = 100
+continuation_prompt = "[▸▹ ](overlay1)"
+format = "$hostname$directory$git_branch$git_state$git_commit$git_status$fill$status$jobs$cmd_duration$python$terraform$kubernetes$aws$line_break$character"
 
 [palettes.catppuccin_mocha]
 rosewater = "#f5e0dc"
@@ -33,8 +35,8 @@ mantle = "#181825"
 crust = "#11111b"
 
 [character]
-error_symbol = "[✗](bold red)"
 success_symbol = "[❯](bold pink)"
+error_symbol = "[❯](bold red)"
 
 [directory]
 truncation_length = 2
@@ -42,24 +44,84 @@ truncation_symbol = "…/"
 style = "bold pink"
 repo_root_style = "bold pink"
 repo_root_format = "[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) "
+read_only = " 󰌾"
+read_only_style = "red"
 
 [git_branch]
-format = "[$branch]($style) "
+format = "[$symbol$branch]($style) "
+truncation_length = 30
+truncation_symbol = "…"
+only_attached = true
+symbol = " "
 style = "italic mauve"
 
 [git_status]
-format     = '[$all_status]($style)'
-style      = "blue"
-ahead      = "⇡${count} "
-diverged   = "⇕⇡${ahead_count}⇣${behind_count} "
-behind     = "⇣${count} "
-conflicted = " "
-up_to_date = " "
-untracked  = "? "
-modified   = " "
-stashed    = ""
-staged     = ""
-renamed    = ""
-deleted    = ""
+format = "$all_status$ahead_behind"
+conflicted = "[ ](bold red)"
+stashed = "[ ](mauve)"
+deleted = "[ ](red)"
+renamed = "[» ](yellow)"
+modified = "[ ](peach)"
+staged = "[ ](green)"
+untracked = "[? ](overlay1)"
+up_to_date = "[ ](green)"
+ahead = "[$count ](green)"
+behind = "[$count ](peach)"
+diverged = "[$ahead_count ](green)[$behind_count ](peach)"
 
+[git_state]
+format = '[($state( $progress_current/$progress_total) )]($style)'
+style = "peach"
 
+[git_commit]
+format = '[ $hash$tag]($style) '
+style = "overlay1"
+
+[hostname]
+ssh_only = true
+format = '[$ssh_symbol$hostname]($style) '
+ssh_symbol = " "
+style = "bold teal"
+
+[status]
+disabled = false
+format = '[$symbol$status]($style) '
+symbol = "✘ "
+style = "red"
+
+[jobs]
+symbol = " "
+style = "peach"
+
+[cmd_duration]
+min_time = 2000
+format = "[󱎫 $duration]($style) "
+style = "overlay1"
+
+[python]
+format = '[( $virtualenv )]($style)'
+style = "overlay1"
+
+[terraform]
+format = '[$symbol$workspace]($style) '
+symbol = "󱁢 "
+style = "mauve"
+
+[kubernetes]
+disabled = false
+format = '[$symbol$context( \($namespace\))]($style) '
+symbol = "󱃾 "
+style = "blue"
+
+[[kubernetes.contexts]]
+context_pattern = ".*(prod|prd).*"
+style = "bold red"
+
+[aws]
+format = '[$symbol($profile )(\($region\) )]($style)'
+symbol = " "
+style = "peach"
+
+[fill]
+symbol = "·"
+style = "surface2"
