@@ -29,8 +29,6 @@ brew "gitleaks"
 brew "gnupg"
 # Open source programming language to build simple/reliable/efficient software
 brew "go"
-# Go version management
-brew "goenv"
 # Command-line pager for JSON data
 brew "jless"
 # Lightweight and flexible command-line JSON processor
@@ -41,6 +39,8 @@ brew "k9s"
 brew "kubernetes-cli"
 # Simple terminal UI for git commands
 brew "lazygit"
+# Polyglot runtime manager (asdf rust clone)
+brew "mise"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
 # Port scanning utility for large networks
@@ -63,8 +63,6 @@ brew "shellcheck"
 brew "starship"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
 brew "stow"
-# OpenTofu / Terraform / Terragrunt / Terramate / Atmos version manager
-brew "tenv"
 # Terminal multiplexer
 brew "tmux"
 # Generic Python virtualenv management and test command-line tool
@@ -101,4 +99,3 @@ cask "ghostty"
 cask "obsidian"
 # Move and resize windows using keyboard shortcuts or snap areas
 cask "rectangle"
-npm "@fission-ai/openspec"

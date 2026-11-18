@@ -1,8 +1,3 @@
-# Go (goenv)
-if [ -d "$HOME/.goenv" ] ; then
-  export GOENV_ROOT="$HOME/.goenv"
-  export PATH="$PATH:$GOENV_ROOT/bin"
-  eval "$(goenv init -)"
-  export PATH="$PATH:$GOROOT/bin"
-  export PATH="$PATH:$GOPATH/bin"
-fi
+# mise shims (go); `mise activate zsh` is the alternative if per-project [env] is ever needed
+[[ -d ${XDG_DATA_HOME:-$HOME/.local/share}/mise/shims ]] && export PATH="${XDG_DATA_HOME:-$HOME/.local/share}/mise/shims:$PATH"
+export PATH="$PATH:$HOME/go/bin"

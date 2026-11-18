@@ -1,0 +1,13 @@
+[tools]
+go = "1.26"
+node = "24"
+terraform = "1.15"
+"npm:@fission-ai/openspec" = "1.14.3"
+
+[settings]
+auto_install = false
+not_found_auto_install = false
+exec_auto_install = false
+minimum_release_age = "7d"
+lockfile = true
+go.set_gobin = false
