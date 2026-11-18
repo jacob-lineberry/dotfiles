@@ -45,3 +45,9 @@ if [[ ! -e $HOME/.pi/agent/settings.json ]]; then
   mkdir -p "$HOME/.pi/agent"
   cp "$DOTFILES/pi/agent/settings.json" "$HOME/.pi/agent/settings.json"
 fi
+
+# Packages are opt-in: ./setup.sh --brew
+if [[ ${1:-} == --brew ]]; then
+  brew bundle --file="$DOTFILES/homebrew/Brewfile"
+  if [[ -r $HOME/.corp/Brewfile ]]; then brew bundle --file="$HOME/.corp/Brewfile"; fi
+fi
