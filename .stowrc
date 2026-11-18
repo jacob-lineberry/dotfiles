@@ -4,6 +4,8 @@
 --ignore=DS_Store
 --ignore=README.md
 --ignore=setup.sh
+--ignore=check[.]sh
+--ignore=[.]github
 --ignore=[.]git
 --ignore=[.]gitignore
 --ignore=[.]planning

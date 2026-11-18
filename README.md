@@ -35,3 +35,20 @@ cd ~/dotfiles && ./setup.sh
 ## Machine-specific config
 
 Anything private or specific to one machine stays out of this repo. `zsh/core.zsh` silently sources `~/.corp/env.zsh` if it exists; put local environment variables, certificates and PATH entries there.
+
+## Quality & Safety Checks
+
+Run `./check.sh` locally to validate dotfiles integrity:
+
+```bash
+./check.sh
+```
+
+It checks:
+- **Secrets**: `gitleaks` scans working tree or staged changes
+- **Shell**: `shellcheck` lints all shell scripts
+- **Zsh syntax**: `zsh -n` verifies all shell configs
+- **Lua formatting**: `stylua --check` validates Neovim configurations
+- **Stow health**: verifies clean symlinking without conflicts
+
+`setup.sh` automatically installs `./check.sh` as a Git `pre-commit` hook. The same checks run in CI via GitHub Actions.

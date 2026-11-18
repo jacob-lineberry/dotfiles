@@ -54,3 +54,14 @@ if [[ ${1:-} == --brew ]]; then
   brew bundle --file="$DOTFILES/homebrew/Brewfile"
   if [[ -r $HOME/.corp/Brewfile ]]; then brew bundle --file="$HOME/.corp/Brewfile"; fi
 fi
+
+# Rebuild bat theme cache if bat is installed
+if command -v bat >/dev/null 2>&1; then
+  bat cache --build >/dev/null 2>&1 || true
+fi
+
+# Install git pre-commit hook if inside git repo
+if [[ -d "$DOTFILES/.git" ]]; then
+  mkdir -p "$DOTFILES/.git/hooks"
+  ln -sf "../../check.sh" "$DOTFILES/.git/hooks/pre-commit"
+fi
