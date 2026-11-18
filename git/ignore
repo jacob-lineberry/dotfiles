@@ -1,0 +1,11 @@
+.DS_Store
+.opencode
+.gemini/settings.json
+.env
+.envrc
+*.env*
+auth.json
+.playwright-cli
+findings.md
+progress.md
+task_plan.md

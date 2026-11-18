@@ -1,0 +1,63 @@
+[user]
+	name = Jacob Lineberry
+[init]
+	defaultBranch = main
+[core]
+	pager = "if command -v delta >/dev/null; then delta; else less; fi"
+[interactive]
+	diffFilter = "if command -v delta >/dev/null; then delta --color-only; else cat; fi"
+[delta]
+	navigate = true
+	line-numbers = true
+	dark = true
+	syntax-theme = Catppuccin Mocha
+	file-style = bold "#f5c2e7"
+	file-decoration-style = "#6c7086" ul
+	hunk-header-style = file line-number syntax
+	hunk-header-decoration-style = "#6c7086" box ul
+	commit-decoration-style = "#6c7086" bold box ul
+	line-numbers-left-style = "#6c7086"
+	line-numbers-right-style = "#6c7086"
+	line-numbers-zero-style = "#6c7086"
+	line-numbers-minus-style = bold "#f38ba8"
+	line-numbers-plus-style = bold "#a6e3a1"
+	minus-style = syntax "#35293b"
+	minus-emph-style = bold syntax "#53394c"
+	plus-style = syntax "#2d3d3b"
+	plus-emph-style = bold syntax "#40504b"
+[diff]
+	algorithm = histogram
+	colorMoved = default
+[merge]
+	conflictStyle = zdiff3
+[pull]
+	ff = only
+[push]
+	autoSetupRemote = true
+[fetch]
+	prune = true
+[rerere]
+	enabled = true
+[branch]
+	sort = -committerdate
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[alias]
+	st = status -sb
+	co = checkout
+	sw = switch
+	br = branch
+	lg = log --graph --oneline --decorate -n 20
+	last = log -1 HEAD --stat
+	unstage = restore --staged
+	amend = commit --amend --no-edit
+	fixup = commit --fixup
+# Machine-specific identity, signing and ignores (untracked; skipped if missing)
+[include]
+	path = ~/.corp/gitconfig
+# Public identity for the dotfiles repo (wins over the include above)
+[includeIf "gitdir:~/dotfiles/"]
+	path = ~/.config/git/personal
