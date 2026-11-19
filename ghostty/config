@@ -1,7 +1,7 @@
 # Theme
-theme = Catppuccin Mocha
-palette = 4=#f5c2e7
-palette = 12=#f5c2e7
+theme = TokyoNight Storm
+palette = 4=#bb9af7
+palette = 12=#bb9af7
 minimum-contrast = 1.1
 
 # Font
@@ -27,7 +27,7 @@ mouse-hide-while-typing = true
 
 # Splits
 unfocused-split-opacity = 0.85
-split-divider-color = #585b70
+split-divider-color = #414868
 
 # Omarchy-style: super+return opens a new terminal window in the current directory
 keybind = cmd+enter=new_window

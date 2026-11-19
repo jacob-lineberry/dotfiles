@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 
-# Catppuccin Mocha Palette (0xAARRGGBB)
-BAR_BG=0xee181825
-TEXT=0xffcdd6f4
-PINK=0xfff5c2e7
-MAUVE=0xffcba6f7
-SURFACE0=0xff313244
-GREEN=0xffa6e3a1
-BLUE=0xff89b4fa
+# Tokyo Night Storm Palette (0xAARRGGBB)
+BAR_BG=0xee1f2335
+TEXT=0xffc0caf5
+CYAN=0xff7dcfff
+MAGENTA=0xffbb9af7
+SURFACE0=0xff292e42
+GREEN=0xff9ece6a
 
 PLUGIN_DIR="$CONFIG_DIR/plugins"
 
@@ -39,7 +38,7 @@ sketchybar --default \
 sketchybar --add item apple.logo left \
   --set apple.logo \
     icon="󰀵" \
-    icon.color="$PINK" \
+    icon.color="$MAGENTA" \
     label.drawing=off \
     padding_right=8
 
@@ -64,7 +63,7 @@ sketchybar --add item front_app left \
     background.color="$SURFACE0" \
     background.drawing=on \
     icon.drawing=off \
-    label.color="$MAUVE" \
+    label.color="$MAGENTA" \
     label.padding_left=10 \
     label.padding_right=10 \
     padding_left=10 \
@@ -85,7 +84,7 @@ sketchybar --add item clock right \
 sketchybar --add item volume right \
   --subscribe volume volume_change \
   --set volume \
-    icon.color="$BLUE" \
+    icon.color="$CYAN" \
     background.color="$SURFACE0" \
     background.drawing=on \
     label.padding_right=8 \

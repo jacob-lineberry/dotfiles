@@ -5,9 +5,9 @@
 config-version = 2
 
 # Commands that run after AeroSpace startup
-# Automatically launch JankyBorders with Catppuccin Mocha Pink active border
+# Automatically launch JankyBorders with Tokyo Night Blue active border
 after-startup-command = [
-  'exec-and-forget borders active_color=0xfff5c2e7 inactive_color=0xff45475a width=6.0 style=round hidpi=on order=above'
+  'exec-and-forget borders active_color=0xff7aa2f7 inactive_color=0xff292e42 width=6.0 style=round hidpi=on order=above'
 ]
 
 # Start AeroSpace at login (keep false for safe trial mode; toggle to true once comfortable)

@@ -29,13 +29,13 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' accept-exact '*(N)'
 
-# Colors (Catppuccin Mocha): file colors from LS_COLORS, selected item Mauve (#cba6f7) on Surface1 (#45475a)
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}" "ma=38;2;203;166;247;48;2;69;71;90;1"
+# Colors (Tokyo Night Storm): file colors from LS_COLORS, selected item Magenta (#bb9af7) on Visual (#2e3c64)
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}" "ma=38;2;187;154;247;48;2;46;60;100;1"
 zstyle ':completion:*' group-name ''
-zstyle ':completion:*:descriptions' format '%F{#cba6f7}-- %d --%f'
-zstyle ':completion:*:corrections' format '%F{#f9e2af}-- %d (errors: %e) --%f'
-zstyle ':completion:*:messages' format '%F{#89b4fa}-- %d --%f'
-zstyle ':completion:*:warnings' format '%F{#f38ba8}-- no matches found --%f'
+zstyle ':completion:*:descriptions' format '%F{#bb9af7}-- %d --%f'
+zstyle ':completion:*:corrections' format '%F{#e0af68}-- %d (errors: %e) --%f'
+zstyle ':completion:*:messages' format '%F{#7dcfff}-- %d --%f'
+zstyle ':completion:*:warnings' format '%F{#f7768e}-- no matches found --%f'
 
 # Cache
 zstyle ':completion:*' use-cache on

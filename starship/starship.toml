@@ -1,48 +1,41 @@
-palette = "catppuccin_mocha"
+palette = "tokyonight_storm"
 
 add_newline = true
 command_timeout = 200
 scan_timeout = 100
-continuation_prompt = "[▸▹ ](overlay1)"
+continuation_prompt = "[▸▹ ](comment)"
 format = "$hostname$directory$git_branch$git_state$git_commit$git_status$fill$status$jobs$cmd_duration$python$terraform$kubernetes$aws$line_break$character"
 
-[palettes.catppuccin_mocha]
-rosewater = "#f5e0dc"
-flamingo = "#f2cdcd"
-pink = "#f5c2e7"
-mauve = "#cba6f7"
-red = "#f38ba8"
-maroon = "#eba0ac"
-peach = "#fab387"
-yellow = "#f9e2af"
-green = "#a6e3a1"
-teal = "#94e2d5"
-sky = "#89dceb"
-sapphire = "#74c7ec"
-blue = "#89b4fa"
-lavender = "#b4befe"
-text = "#cdd6f4"
-subtext1 = "#bac2de"
-subtext0 = "#a6adc8"
-overlay2 = "#9399b2"
-overlay1 = "#7f849c"
-overlay0 = "#6c7086"
-surface2 = "#585b70"
-surface1 = "#45475a"
-surface0 = "#313244"
-base = "#1e1e2e"
-mantle = "#181825"
-crust = "#11111b"
+[palettes.tokyonight_storm]
+bg_night = "#1a1b26"
+bg_storm = "#24283b"
+bg_highlight = "#292e42"
+terminal_black = "#414868"
+fg = "#c0caf5"
+fg_dark = "#a9b1d6"
+comment = "#565f89"
+blue = "#7aa2f7"
+cyan = "#7dcfff"
+blue1 = "#2ac3de"
+magenta = "#bb9af7"
+purple = "#9d7cd8"
+green = "#9ece6a"
+teal = "#73daca"
+yellow = "#e0af68"
+orange = "#ff9e64"
+red = "#f7768e"
+regex = "#b4f9f8"
+teal_accent = "#1abc9c"
 
 [character]
-success_symbol = "[❯](bold pink)"
+success_symbol = "[❯](bold teal)"
 error_symbol = "[❯](bold red)"
 
 [directory]
 truncation_length = 2
 truncation_symbol = "…/"
-style = "bold pink"
-repo_root_style = "bold pink"
+style = "bold magenta"
+repo_root_style = "bold magenta"
 repo_root_format = "[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) "
 read_only = " 󰌾"
 read_only_style = "red"
@@ -53,35 +46,35 @@ truncation_length = 30
 truncation_symbol = "…"
 only_attached = true
 symbol = " "
-style = "italic mauve"
+style = "italic orange"
 
 [git_status]
 format = "$all_status$ahead_behind"
 conflicted = "[ ](bold red)"
-stashed = "[ ](mauve)"
-deleted = "[ ](red)"
+stashed = "[ ](magenta)"
+deleted = "[ ](red)"
 renamed = "[» ](yellow)"
-modified = "[ ](peach)"
-staged = "[ ](green)"
-untracked = "[? ](overlay1)"
-up_to_date = "[ ](green)"
+modified = "[! ](yellow)"
+staged = "[+ ](green)"
+untracked = "[? ](comment)"
+up_to_date = ""
 ahead = "[$count ](green)"
-behind = "[$count ](peach)"
-diverged = "[$ahead_count ](green)[$behind_count ](peach)"
+behind = "[$count ](orange)"
+diverged = "[$ahead_count ](green)[$behind_count ](orange)"
 
 [git_state]
 format = '[($state( $progress_current/$progress_total) )]($style)'
-style = "peach"
+style = "orange"
 
 [git_commit]
 format = '[ $hash$tag]($style) '
-style = "overlay1"
+style = "comment"
 
 [hostname]
 ssh_only = true
 format = '[$ssh_symbol$hostname]($style) '
 ssh_symbol = " "
-style = "bold teal"
+style = "bold cyan"
 
 [status]
 disabled = false
@@ -91,21 +84,21 @@ style = "red"
 
 [jobs]
 symbol = " "
-style = "peach"
+style = "orange"
 
 [cmd_duration]
 min_time = 2000
 format = "[󱎫 $duration]($style) "
-style = "overlay1"
+style = "comment"
 
 [python]
 format = '[( $virtualenv )]($style)'
-style = "overlay1"
+style = "comment"
 
 [terraform]
 format = '[$symbol$workspace]($style) '
 symbol = "󱁢 "
-style = "mauve"
+style = "purple"
 
 [kubernetes]
 disabled = false
@@ -120,8 +113,8 @@ style = "bold red"
 [aws]
 format = '[$symbol($profile )(\($region\) )]($style)'
 symbol = " "
-style = "peach"
+style = "yellow"
 
 [fill]
 symbol = "·"
-style = "surface2"
+style = "terminal_black"

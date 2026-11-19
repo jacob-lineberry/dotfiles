@@ -5,11 +5,11 @@ if (( $+commands[fzf] )); then
   export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
   export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
 
-  # Catppuccin Mocha; bg:-1 keeps the (transparent) terminal background
+  # Tokyo Night Storm; bg:-1 keeps the (transparent) terminal background
   export FZF_DEFAULT_OPTS="--height=40% --layout=reverse --border=rounded \
---color=bg:-1,bg+:#313244,fg:#cdd6f4,fg+:#cdd6f4,hl:#f38ba8,hl+:#f38ba8 \
---color=info:#cba6f7,prompt:#f5c2e7,pointer:#f5c2e7,marker:#b4befe,spinner:#f5e0dc \
---color=header:#f38ba8,border:#6c7086,selected-bg:#45475a"
+--color=bg:-1,bg+:#292e42,fg:#c0caf5,fg+:#c0caf5,hl:#f7768e,hl+:#f7768e \
+--color=info:#bb9af7,prompt:#7aa2f7,pointer:#7aa2f7,marker:#7dcfff,spinner:#7dcfff \
+--color=header:#f7768e,border:#565f89,selected-bg:#2e3c64"
   export FZF_CTRL_T_OPTS="--preview 'bat --color=always --style=numbers --line-range=:200 {}'"
   export FZF_ALT_C_OPTS="--preview 'eza --tree --level=2 --icons --color=always {}'"
 fi

@@ -1,6 +1,6 @@
 # Zsh plugins (Homebrew, apt): autosuggestions, then syntax highlighting last
 
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#6c7086'
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#565f89'
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
 () {

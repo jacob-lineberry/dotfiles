@@ -22,8 +22,8 @@ if (( $+commands[gpg] )) && [[ -t 0 ]]; then export GPG_TTY=$(tty); fi
 # Corporate/local environment overrides (loaded silently if present)
 [[ -r "$HOME/.corp/env.zsh" ]] && source "$HOME/.corp/env.zsh"
 
-# Directory colors: Catppuccin Mocha Pink (#f5c2e7)
-export LS_COLORS="di=38;2;245;194;231:${LS_COLORS}"
+# Directory colors: Tokyo Night Magenta (#bb9af7)
+export LS_COLORS="di=38;2;187;154;247:${LS_COLORS}"
 export LSCOLORS="fxfxcxdxbxegedabagacad"
 
 

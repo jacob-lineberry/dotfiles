@@ -1,24 +1,19 @@
 return {
   {
-    "catppuccin/nvim",
-    name = "catppuccin",
+    "folke/tokyonight.nvim",
     opts = {
-      flavour = "mocha",
-      highlight_overrides = {
-        mocha = function(mocha)
-          return {
-            Directory = { fg = mocha.pink },
-            NeoTreeDirectoryIcon = { fg = mocha.pink },
-            NeoTreeDirectoryName = { fg = mocha.pink },
-          }
-        end,
-      },
+      style = "storm",
+      on_highlights = function(hl, c)
+        hl.Directory = { fg = c.magenta }
+        hl.NeoTreeDirectoryIcon = { fg = c.magenta }
+        hl.NeoTreeDirectoryName = { fg = c.magenta }
+      end,
     },
   },
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "catppuccin",
+      colorscheme = "tokyonight",
     },
   },
 }
