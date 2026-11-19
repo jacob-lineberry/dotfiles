@@ -14,7 +14,7 @@ setopt AUTOCD
 setopt NOBEEP
 
 # load direnv
-eval "$(direnv hook zsh)"
+(( $+commands[direnv] )) && eval "$(direnv hook zsh)"
 
 # GPG pinentry needs the current tty (only when gpg exists and stdin is a terminal)
 if (( $+commands[gpg] )) && [[ -t 0 ]]; then export GPG_TTY=$(tty); fi

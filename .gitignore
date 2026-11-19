@@ -4,6 +4,14 @@
 *.key
 *.local
 *.log
+*.local.json
+.env
+.env.*
+!.env.example
+auth.json
+oauth_creds.json
+google_accounts.json
+*.sqlite-*
 .zsh_history
 .zcompdump*
 .planning/

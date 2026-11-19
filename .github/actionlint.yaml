@@ -1,0 +1,4 @@
+# actionlint's built-in label list lags the hosted runner images (actions/runner-images README)
+self-hosted-runner:
+  labels:
+    - ubuntu-26.04

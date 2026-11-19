@@ -1,0 +1,10 @@
+# Global agent skills, installed by ./setup.sh --skills
+# Format: <source> <skill>   (source: owner/repo@tag-or-commit; pin it, skills run third-party content)
+#
+# Not listed because their own tools regenerate them:
+#   openspec-*  -> openspec update
+#   tuios       -> tuios integration install
+
+OthmanAdi/planning-with-files@v3.0.0 planning-with-files
+
+# improve-codebase-architecture: upstream source not recorded, add "<owner/repo@ref> improve-codebase-architecture"

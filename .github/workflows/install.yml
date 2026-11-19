@@ -1,0 +1,71 @@
+name: Install Smoke Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 6 * * 4" # weekly, to catch drift in runner images and Homebrew
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  install:
+    name: Install on ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: macOS, os: macos-latest, platform: macos }
+          - { name: Ubuntu 24.04, os: ubuntu-24.04, platform: ubuntu }
+          - { name: Ubuntu 26.04, os: ubuntu-26.04, platform: ubuntu }
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Platform is detected
+        env:
+          EXPECTED: ${{ matrix.platform }}
+        run: |
+          source scripts/lib/platform.sh
+          [[ $(detect_platform) == "$EXPECTED" ]]
+
+      # No stow pre-install: setup.sh installs its own prerequisites
+      - name: setup.sh on a clean machine
+        run: ./setup.sh
+
+      - name: setup.sh is idempotent
+        run: |
+          out=$(./setup.sh)
+          if grep -q 'backed up' <<<"$out"; then echo "$out"; exit 1; fi
+
+      - run: ./scripts/checks/stow.sh
+
+      - name: Platform-specific packages
+        env:
+          PLATFORM: ${{ matrix.platform }}
+        run: |
+          if [[ $PLATFORM == macos ]]; then
+            test -e ~/.config/aerospace/aerospace.toml
+            test -e ~/.config/homebrew/Brewfile
+          else
+            test ! -e ~/.config/aerospace
+            test ! -e ~/.config/homebrew
+          fi
+          test -e ~/.config/nvim/init.lua
+
+      - name: git ignore rules apply without ~/.corp
+        run: |
+          scratch=$(mktemp -d)
+          git -C "$scratch" init -q
+          git -C "$scratch" check-ignore -q oauth_creds.json

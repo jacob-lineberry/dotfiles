@@ -65,6 +65,8 @@ brew "oxipng"
 brew "pinentry-mac"
 # PNG image optimizing utility
 brew "pngquant"
+# Framework for managing and maintaining multi-language pre-commit hooks
+brew "pre-commit"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
 # Extremely fast Python linter, written in Rust

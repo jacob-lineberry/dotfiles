@@ -1,0 +1,76 @@
+minimum_pre_commit_version: "4.0.0"
+default_install_hook_types: [pre-commit]
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c  # frozen: v6.0.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: destroyed-symlinks
+      - id: detect-private-key
+      - id: check-yaml
+      - id: check-toml
+
+  - repo: https://github.com/rhysd/actionlint
+    rev: 914e7df21a07ef503a81201c76d2b11c789d3fca  # frozen: v1.7.12
+    hooks:
+      # system Go: pre-commit's own Go download fails behind the corporate TLS proxy
+      - id: actionlint
+        language_version: system
+
+  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+    rev: 06a39750ec31860bb44f2acf67182c40016cd1e7  # frozen: v1.32.0
+    hooks:
+      - id: zizmor
+
+  - repo: local
+    hooks:
+      # PyPI wheel, not the shellcheck-py repo hook: that one downloads from GitHub at build time
+      # and fails Python's strict TLS verification behind the corporate proxy
+      - id: shellcheck
+        name: shellcheck
+        entry: shellcheck
+        language: python
+        additional_dependencies: [shellcheck-py==0.11.0.1]
+        types: [shell]
+        exclude_types: [zsh]
+        require_serial: true
+        files: ^(setup\.sh|check\.sh|install\.sh|scripts/.+|macos/.+|sketchybar/.+)$
+      - id: stylua
+        name: stylua
+        entry: scripts/checks/stylua.sh
+        language: script
+        types: [lua]
+        files: ^nvim/
+      # CI skips this hook (SKIP=gitleaks) and scans full history in its own job
+      - id: gitleaks
+        name: gitleaks
+        entry: scripts/checks/gitleaks.sh
+        language: script
+        pass_filenames: false
+        always_run: true
+      - id: zsh-syntax
+        name: zsh syntax
+        entry: scripts/checks/zsh-syntax.sh
+        language: script
+        files: ^zsh/(\.zshenv|\.zshrc|.+\.zsh)$
+      - id: stow-dry-run
+        name: stow dry run
+        entry: scripts/checks/stow.sh
+        language: script
+        pass_filenames: false
+        always_run: true
+      - id: ignore-rules
+        name: credential ignore rules
+        entry: scripts/checks/ignore-rules.sh
+        language: script
+        pass_filenames: false
+        files: ^(\.gitignore|git/ignore)$
+      - id: skills-manifest
+        name: skills manifest is pinned
+        entry: scripts/checks/skills-manifest.sh
+        language: script
+        pass_filenames: false
+        files: ^agents/skills\.txt$
