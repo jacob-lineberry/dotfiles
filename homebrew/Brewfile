@@ -59,8 +59,6 @@ brew "mise"
 brew "neovim"
 # Port scanning utility for large networks
 brew "nmap"
-# Open-source, cross-platform JavaScript runtime environment
-brew "node"
 # Multithreaded PNG optimizer written in Rust
 brew "oxipng"
 # Pinentry for GPG on Mac

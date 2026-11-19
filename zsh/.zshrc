@@ -5,10 +5,12 @@
 
 # load zsh config files in order: core (sources ~/.corp/env.zsh) first; completion
 # before tools and plugins; plugins last
-for file in core functions paths aliases completion tools prompt plugins; do
+for file in core functions aliases completion tools prompt plugins; do
   [[ -r $ZDOTDIR/$file.zsh ]] && source $ZDOTDIR/$file.zsh
 done
 unset file
+
+[[ -d ${XDG_DATA_HOME:-$HOME/.local/share}/mise/shims ]] && export PATH="${XDG_DATA_HOME:-$HOME/.local/share}/mise/shims:$PATH"
 
 # string assignments to PATH (brew, goenv, ~/.corp) can leave duplicates; dedupe once, keeping order
 typeset -U path
