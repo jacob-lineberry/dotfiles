@@ -26,8 +26,7 @@ jobs:
       matrix:
         include:
           - { name: macOS, os: macos-latest, platform: macos }
-          - { name: Ubuntu 24.04, os: ubuntu-24.04, platform: ubuntu }
-          - { name: Ubuntu 26.04, os: ubuntu-26.04, platform: ubuntu }
+          - { name: Ubuntu, os: ubuntu-latest, platform: ubuntu }
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -86,8 +85,7 @@ jobs:
       matrix:
         include:
           - { name: macOS, os: macos-latest, platform: macos }
-          - { name: Ubuntu 24.04, os: ubuntu-24.04, platform: ubuntu }
-          - { name: Ubuntu 26.04, os: ubuntu-26.04, platform: ubuntu }
+          - { name: Ubuntu, os: ubuntu-latest, platform: ubuntu }
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
