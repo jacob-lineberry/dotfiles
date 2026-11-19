@@ -76,6 +76,7 @@ install_skills() {
 # Git hooks run through pre-commit (.pre-commit-config.yaml); drop the old check.sh symlink hook first
 install_hooks() {
   [[ -d $DOTFILES/.git ]] || return 0
+  [[ -d ${XDG_DATA_HOME:-$HOME/.local/share}/mise/shims ]] && export PATH="${XDG_DATA_HOME:-$HOME/.local/share}/mise/shims:$PATH"
   [[ ! -L $DOTFILES/.git/hooks/pre-commit ]] || rm -f "$DOTFILES/.git/hooks/pre-commit"
   if have pre-commit; then
     pre-commit install >/dev/null
@@ -85,6 +86,9 @@ install_hooks() {
 }
 
 step "Platform: $PLATFORM"
+if [[ $DOTFILES != "$HOME/dotfiles" ]]; then
+  echo "Warning: repo is at $DOTFILES, not $HOME/dotfiles; git identity and signing override will not apply" >&2
+fi
 platform_prerequisites
 mkdir -p "$TARGET"
 bootstrap_zsh

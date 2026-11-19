@@ -22,3 +22,9 @@ link() {
   backup_unless_linked "$1" "$2"
   ln -sfn "$1" "$2"
 }
+
+install_mise_tools() {
+  have mise || die "mise not found"
+  step "mise: install --locked"
+  (cd "$DOTFILES" && mise install --locked)
+}

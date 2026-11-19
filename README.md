@@ -38,7 +38,7 @@ curl -fsSL https://raw.githubusercontent.com/jacob-lineberry/dotfiles/main/insta
 
 `setup.sh` detects macOS or Ubuntu, installs what it needs to run (stow via Homebrew on macOS; git, curl, stow and zsh via apt on Ubuntu), moves any conflicting existing file into `~/.dotfiles-backup/<timestamp>/`, runs `stow`, writes `~/.zshenv` (sets `ZDOTDIR` and sources `zsh/.zshenv`) if missing, and links the apps that do not read `~/.config`. It is safe to re-run.
 
-- `--packages` installs the platform's packages. On macOS that is `homebrew/Brewfile` (and `~/.corp/Brewfile`, if present); Homebrew itself is not installed for you, get it from <https://brew.sh> first. On Ubuntu it is not set up yet and exits with a message; packages will come from apt, not Homebrew.
+- `--packages` installs the platform's packages, followed by `mise install --locked`. On macOS that is `homebrew/Brewfile` (and `~/.corp/Brewfile`, if present); Homebrew itself is not installed for you, get it from <https://brew.sh> first. On Ubuntu it installs apt packages, enables and installs mise via `extrepo`, and installs the locked mise tools.
 - `--skills` installs the agent skills listed in `agents/skills.txt` into `~/.agents/skills`, linked for Claude Code. Skills are not vendored, and each manifest line must be pinned to a tag or commit.
 
 On WSL2 clone inside the Ubuntu instance (not under `/mnt/c`), where symlinks behave. WezTerm on the Windows side is not managed by this repo.
@@ -59,7 +59,7 @@ On WSL2 clone inside the Ubuntu instance (not under `/mnt/c`), where symlinks be
 
 ## Machine-specific config
 
-Anything private or specific to one machine stays out of this repo. `zsh/core.zsh` silently sources `~/.corp/env.zsh` if it exists; put local environment variables, certificates and PATH entries there.
+Anything private or specific to one machine stays out of this repo. `zsh/core.zsh` silently sources `~/.corp/env.zsh` if it exists; put local environment variables, certificates and PATH entries there. Dotfiles commits are unsigned (`git/personal` sets `commit.gpgsign = false`); corporate repositories keep signing through `~/.corp/gitconfig`.
 
 ## macOS System Defaults
 
@@ -88,4 +88,4 @@ Anything private or specific to one machine stays out of this repo. `zsh/core.zs
 - **Ignore rules**: credential files stay ignored by both `git/ignore` and `.gitignore`
 - **Skills manifest**: every `agents/skills.txt` entry is pinned
 
-`setup.sh` installs the pre-commit hook. CI (`lint.yml`, "Lint & Security") runs the same config with pinned, least-privilege actions; `install.yml` ("Install Smoke Test") runs `setup.sh` twice on clean macOS and Ubuntu 24.04 and 26.04 runners to prove it works and is idempotent. Hook and action versions are pinned to commit SHAs and updated by Dependabot.
+`setup.sh` installs the pre-commit hook. CI (`lint.yml`, "Lint & Security") runs the same config with pinned, least-privilege actions; `install.yml` ("Install Smoke Test") runs `setup.sh` twice on clean macOS and Ubuntu 24.04 and 26.04 runners to prove it works and is idempotent. Hook and action versions are pinned to commit SHAs and updated by Dependabot. The `main` branch is protected by a GitHub ruleset that blocks deletion and force-push.

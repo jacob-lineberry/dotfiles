@@ -19,6 +19,7 @@ platform_install_packages() {
   ensure_brew
   brew bundle --file="$DOTFILES/homebrew/Brewfile"
   if [[ -r $HOME/.corp/Brewfile ]]; then brew bundle --file="$HOME/.corp/Brewfile"; fi
+  install_mise_tools
 }
 
 platform_tuios_dir() { printf '%s\n' "$HOME/Library/Application Support/tuios"; }
