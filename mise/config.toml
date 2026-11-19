@@ -21,6 +21,7 @@ dust = "1.2"
 fastfetch = "2.71"
 k9s = "0.51"
 tuios = "0.12"
+golangci-lint = "2.15.0"
 
 [settings]
 auto_install = false
