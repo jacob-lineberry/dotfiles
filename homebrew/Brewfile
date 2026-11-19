@@ -5,26 +5,14 @@
 brew "awscli"
 # A window border system for macOS
 brew "felixkratz/formulae/borders", trusted: true
-# Clone of cat(1) with syntax highlighting and Git integration
-brew "bat"
 # Resource monitor. C++ version and continuation of bashtop and bpytop
 brew "btop"
 # Load/unload environment variables based on $PWD
 brew "direnv"
 # Pack, ship and run any application as a lightweight container
 brew "docker"
-# Disk Usage/Free Utility - a better 'df' alternative
-brew "duf"
-# More intuitive version of du in rust
-brew "dust"
 # Modern, maintained replacement for ls
 brew "eza"
-# Like neofetch, but much faster because written mostly in C
-brew "fastfetch"
-# Simple, fast and user-friendly alternative to find
-brew "fd"
-# Command-line fuzzy finder written in Go
-brew "fzf"
 # GitHub command-line tool
 brew "gh"
 # Distributed revision control system
@@ -33,30 +21,18 @@ brew "git"
 brew "git-delta"
 # Git extension for versioning large files
 brew "git-lfs"
-# Audit git repos for secrets
-brew "gitleaks"
 # GNU Privacy Guard (OpenPGP)
 brew "gnupg"
-# Open source programming language to build simple/reliable/efficient software
-brew "go"
 # Command-line benchmarking tool
 brew "hyperfine"
 # Command-line pager for JSON data
 brew "jless"
 # Handy way to save and run project-specific commands
 brew "just"
-# Lightweight and flexible command-line JSON processor
-brew "jq"
-# Kubernetes CLI To Manage Your Clusters In Style!
-brew "k9s"
 # Kubernetes command-line interface
 brew "kubernetes-cli"
-# Simple terminal UI for git commands
-brew "lazygit"
 # Polyglot runtime manager (asdf rust clone)
 brew "mise"
-# Ambitious Vim-fork focused on extensibility and agility
-brew "neovim"
 # Port scanning utility for large networks
 brew "nmap"
 # Multithreaded PNG optimizer written in Rust
@@ -65,18 +41,12 @@ brew "oxipng"
 brew "pinentry-mac"
 # PNG image optimizing utility
 brew "pngquant"
-# Framework for managing and maintaining multi-language pre-commit hooks
-brew "pre-commit"
-# Search tool like grep and The Silver Searcher
-brew "ripgrep"
 # Extremely fast Python linter, written in Rust
 brew "ruff"
 # Static analysis and lint tool, for (ba)sh scripts
 brew "shellcheck"
 # A highly customizable macOS status bar replacement
 brew "felixkratz/formulae/sketchybar", trusted: true
-# Cross-shell prompt for astronauts
-brew "starship"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
 brew "stow"
 # Terminal multiplexer
@@ -87,24 +57,18 @@ brew "tlrc"
 brew "tox"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
-# Terminal UI OS (Terminal Multiplexer)
-brew "tuios"
 # Extremely fast Python type checker, written in Rust
 brew "ty"
 # Extremely fast Python package installer and resolver, written in Rust
 brew "uv"
 # Executes a program periodically, showing output fullscreen
 brew "watch"
-# Blazing fast terminal file manager written in Rust, based on async I/O
-brew "yazi"
-# Shell extension to navigate your filesystem faster
-brew "zoxide"
 # Fish-like fast/unobtrusive autosuggestions for zsh
 brew "zsh-autosuggestions"
 # Additional completion definitions for zsh
 brew "zsh-completions"
-# Feature-rich syntax highlighting for Zsh
-brew "zsh-fast-syntax-highlighting"
+# Fish shell like syntax highlighting for Zsh
+brew "zsh-syntax-highlighting"
 # AeroSpace is an i3-like tiling window manager for macOS
 cask "nikitabobko/tap/aerospace", trusted: true
 # Terminal interface for Antigravity agents
