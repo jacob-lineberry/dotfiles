@@ -10,10 +10,16 @@ apt_sudo() {
   fi
 }
 
+apt_update() {
+  [[ -n ${APT_UPDATED:-} ]] && return 0
+  apt_sudo apt-get update -qq
+  APT_UPDATED=1
+}
+
 apt_install() {
   have apt-get || die "apt-get not found, install manually: $*"
   step "apt: $*"
-  apt_sudo apt-get update -qq
+  apt_update
   apt_sudo apt-get install -y -qq "$@"
 }
 

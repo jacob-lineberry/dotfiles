@@ -13,10 +13,10 @@ fpath=("${HOMEBREW_PREFIX:-/opt/homebrew}"/share/zsh-completions(N-/) $fpath)
   [[ -s $dump ]] && zstat -A mtime +mtime -- $dump
 
   if (( EPOCHSECONDS - ${mtime[1]:-0} < 86400 )); then
-    compinit -C -d $dump
+    compinit -u -C -d $dump
   else
     mkdir -p ${dump:h}
-    compinit -d $dump
+    compinit -u -d $dump
     touch $dump
     { zcompile $dump } &!
   fi
