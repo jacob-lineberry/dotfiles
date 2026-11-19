@@ -1,12 +1,16 @@
-# Zsh plugins (Homebrew): autosuggestions, then syntax highlighting last
+# Zsh plugins (Homebrew, apt): autosuggestions, then syntax highlighting last
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#6c7086'
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
 () {
-  local share="${HOMEBREW_PREFIX:-/opt/homebrew}/share"
-  [[ -r $share/zsh-autosuggestions/zsh-autosuggestions.zsh ]] &&
-    source $share/zsh-autosuggestions/zsh-autosuggestions.zsh
-  [[ -r $share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ]] &&
-    source $share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+  local p file
+  for p in zsh-autosuggestions zsh-syntax-highlighting; do
+    for file in ${HOMEBREW_PREFIX:+"$HOMEBREW_PREFIX/share/$p/$p.zsh"} "/usr/share/$p/$p.zsh"; do
+      if [[ -n $file && -r $file ]]; then
+        source "$file"
+        break
+      fi
+    done
+  done
 }
