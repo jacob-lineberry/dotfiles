@@ -108,9 +108,10 @@ jobs:
         if: matrix.platform == 'macos'
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          HOMEBREW_NO_AUTO_UPDATE: ""
         run: |
           ./setup.sh
-          brew install mise
+          brew install mise || brew upgrade mise
           mise install --locked
 
       - name: zsh starts cleanly
