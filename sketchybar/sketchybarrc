@@ -1,0 +1,106 @@
+#!/usr/bin/env bash
+
+# Catppuccin Mocha Palette (0xAARRGGBB)
+BAR_BG=0xee181825
+TEXT=0xffcdd6f4
+PINK=0xfff5c2e7
+MAUVE=0xffcba6f7
+SURFACE0=0xff313244
+GREEN=0xffa6e3a1
+BLUE=0xff89b4fa
+
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+
+##### Bar Appearance #####
+sketchybar --bar \
+  position=top \
+  height=36 \
+  blur_radius=20 \
+  topmost=on \
+  y_offset=0 \
+  color="$BAR_BG" \
+  padding_left=12 \
+  padding_right=12 \
+  corner_radius=0 \
+  margin=0
+
+##### Item Defaults #####
+sketchybar --default \
+  padding_left=4 \
+  padding_right=4 \
+  icon.font="Maple Mono NF:Bold:14.0" \
+  label.font="Maple Mono NF:Medium:13.0" \
+  icon.color="$TEXT" \
+  label.color="$TEXT" \
+  background.corner_radius=6 \
+  background.height=26
+
+##### Left Items: Apple Logo, AeroSpace Workspaces, Front App #####
+sketchybar --add item apple.logo left \
+  --set apple.logo \
+    icon="󰀵" \
+    icon.color="$PINK" \
+    label.drawing=off \
+    padding_right=8
+
+sketchybar --add event aerospace_workspace_change
+
+for sid in 1 2 3 4 5 6 7 8 9; do
+  sketchybar --add item "space.$sid" left \
+    --subscribe "space.$sid" aerospace_workspace_change \
+    --set "space.$sid" \
+      background.color="$SURFACE0" \
+      background.drawing=off \
+      label="$sid" \
+      label.padding_left=8 \
+      label.padding_right=8 \
+      click_script="aerospace workspace $sid" \
+      script="$PLUGIN_DIR/aerospace.sh $sid"
+done
+
+sketchybar --add item front_app left \
+  --subscribe front_app front_app_switched \
+  --set front_app \
+    background.color="$SURFACE0" \
+    background.drawing=on \
+    icon.drawing=off \
+    label.color="$MAUVE" \
+    label.padding_left=10 \
+    label.padding_right=10 \
+    padding_left=10 \
+    script="$PLUGIN_DIR/front_app.sh"
+
+##### Right Items: Battery, Volume, Clock #####
+sketchybar --add item clock right \
+  --set clock \
+    update_freq=10 \
+    icon.drawing=off \
+    background.color="$SURFACE0" \
+    background.drawing=on \
+    label.color="$TEXT" \
+    label.padding_left=10 \
+    label.padding_right=10 \
+    script="$PLUGIN_DIR/clock.sh"
+
+sketchybar --add item volume right \
+  --subscribe volume volume_change \
+  --set volume \
+    icon.color="$BLUE" \
+    background.color="$SURFACE0" \
+    background.drawing=on \
+    label.padding_right=8 \
+    icon.padding_left=8 \
+    script="$PLUGIN_DIR/volume.sh"
+
+sketchybar --add item battery right \
+  --subscribe battery power_source_change system_woke \
+  --set battery \
+    update_freq=60 \
+    icon.color="$GREEN" \
+    background.color="$SURFACE0" \
+    background.drawing=on \
+    label.padding_right=8 \
+    icon.padding_left=8 \
+    script="$PLUGIN_DIR/battery.sh"
+
+sketchybar --update

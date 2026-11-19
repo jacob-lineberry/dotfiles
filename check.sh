@@ -28,7 +28,7 @@ fi
 # 2. Shellcheck
 if command -v shellcheck >/dev/null 2>&1; then
   echo "  [2/5] Linting shell scripts (shellcheck)..."
-  shellcheck setup.sh check.sh
+  shellcheck setup.sh check.sh sketchybar/sketchybarrc sketchybar/plugins/*.sh
 else
   echo "  [2/5] Warning: shellcheck not installed, skipping shell lint" >&2
 fi

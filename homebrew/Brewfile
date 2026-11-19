@@ -3,6 +3,8 @@
 
 # Official Amazon AWS command-line interface
 brew "awscli"
+# A window border system for macOS
+brew "felixkratz/formulae/borders", trusted: true
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
 # Resource monitor. C++ version and continuation of bashtop and bpytop
@@ -71,6 +73,8 @@ brew "ripgrep"
 brew "ruff"
 # Static analysis and lint tool, for (ba)sh scripts
 brew "shellcheck"
+# A highly customizable macOS status bar replacement
+brew "felixkratz/formulae/sketchybar", trusted: true
 # Cross-shell prompt for astronauts
 brew "starship"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
@@ -101,6 +105,8 @@ brew "zsh-autosuggestions"
 brew "zsh-completions"
 # Feature-rich syntax highlighting for Zsh
 brew "zsh-fast-syntax-highlighting"
+# AeroSpace is an i3-like tiling window manager for macOS
+cask "nikitabobko/tap/aerospace", trusted: true
 # Terminal interface for Antigravity agents
 cask "antigravity-cli"
 # Utility that prevents the system from going to sleep
