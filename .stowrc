@@ -5,6 +5,7 @@
 --ignore=README.md
 --ignore=setup.sh
 --ignore=check[.]sh
+--ignore=macos
 --ignore=[.]github
 --ignore=[.]git
 --ignore=[.]gitignore

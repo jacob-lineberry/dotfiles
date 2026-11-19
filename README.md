@@ -38,6 +38,15 @@ cd ~/dotfiles && ./setup.sh
 
 Anything private or specific to one machine stays out of this repo. `zsh/core.zsh` silently sources `~/.corp/env.zsh` if it exists; put local environment variables, certificates and PATH entries there.
 
+## macOS System Defaults
+
+`macos/macos.sh` configures developer-friendly macOS defaults (fast key repeat rate, press-and-hold disabled for Vim hjkl, instant Dock autohide, smart dashes/quotes disabled, hidden files visible in Finder, clean screenshot shadows).
+
+```bash
+./macos/macos.sh         # apply settings
+./macos/macos-revert.sh  # restore factory defaults anytime
+```
+
 ## Quality & Safety Checks
 
 Run `./check.sh` locally to validate dotfiles integrity:
