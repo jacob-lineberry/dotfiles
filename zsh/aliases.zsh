@@ -4,6 +4,7 @@ if (( $+commands[eza] )); then
   alias tree="eza --tree --icons"
 fi
 
+alias c="clear"
 alias diff="diff --color=auto"
 (( $+commands[duf] )) && alias df="duf"
 (( $+commands[dust] )) && alias du="dust"
