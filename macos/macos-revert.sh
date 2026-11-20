@@ -37,6 +37,9 @@ defaults delete com.apple.finder ShowPathbar 2>/dev/null || true
 defaults delete com.apple.finder FXEnableExtensionChangeWarning 2>/dev/null || true
 defaults delete com.apple.desktopservices DSDontWriteNetworkStores 2>/dev/null || true
 defaults delete com.apple.desktopservices DSDontWriteUSBStores 2>/dev/null || true
+defaults delete com.apple.finder FXDefaultSearchScope 2>/dev/null || true
+defaults delete com.apple.TextEdit RichText 2>/dev/null || true
+defaults delete com.apple.TimeMachine DoNotOfferNewDisksForBackup 2>/dev/null || true
 
 # --- 5. Screenshots & Window Snappiness ---
 echo "  [5/5] Restoring screenshot & window defaults..."

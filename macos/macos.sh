@@ -52,6 +52,12 @@ defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
 # Avoid creating .DS_Store files on network or USB volumes
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
+# Search the current folder by default instead of "This Mac"
+defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
+# Use plain text mode for newly created TextEdit documents
+defaults write com.apple.TextEdit RichText -int 0
+# Prevent Time Machine from prompting to use newly connected external drives
+defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
 
 # --- 5. Screenshots & Window Snappiness ---
 echo "  [5/5] Configuring window animations & screenshots..."
