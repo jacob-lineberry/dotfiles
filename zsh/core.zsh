@@ -18,20 +18,23 @@ setopt NOBEEP
 # _init_cache <name> <command...>: source the output of an init command from a cache instead of forking it in every
 # shell (a mise shim costs ~16 ms per call, so three tools add ~50 ms to each new pane). The cache regenerates when
 # the tool's mise install dir (its init script can embed the versioned binary path), the mise lockfile, the tool's own
-# config under ~/.config/<name>/ (atuin's init reads its config) or the calling file is newer; `rm ~/.cache/zsh/init-*`
-# forces it. A failing command leaves no cache behind, so the shell starts
+# config under ~/.config/<name>/ (atuin's init reads its config) or the calling file is newer, or when the command
+# resolves to a different binary (the first line records it, e.g. after a tool moves from Homebrew to mise);
+# `rm ~/.cache/zsh/init-*` forces it. A failing command leaves no cache behind, so the shell starts
 # without that tool's init.
 _init_cache() {
   local name=$1 caller=${funcfiletrace[1]%:*}
   local cache=${XDG_CACHE_HOME:-$HOME/.cache}/zsh/init-$name.zsh
   local lock=${XDG_CONFIG_HOME:-$HOME/.config}/mise/mise.lock
   local installs=${XDG_DATA_HOME:-$HOME/.local/share}/mise/installs/$name
-  local cfg stale=0
+  local cfg head stale=0
   shift
+  local bin=${commands[$1]}
   for cfg in ${XDG_CONFIG_HOME:-$HOME/.config}/$name/*(N-.); do [[ $cfg -nt $cache ]] && stale=1; done
-  if [[ ! -s $cache || $stale == 1 || $installs -nt $cache || $lock -nt $cache || $caller -nt $cache ]]; then
+  [[ -s $cache ]] && read -r head < $cache
+  if [[ $head != "# $bin" || $stale == 1 || $installs -nt $cache || $lock -nt $cache || $caller -nt $cache ]]; then
     mkdir -p ${cache:h}
-    if "$@" >| $cache.tmp 2>/dev/null; then
+    if { print -r -- "# $bin"; "$@" } >| $cache.tmp 2>/dev/null; then
       mv -f $cache.tmp $cache
     else
       rm -f $cache.tmp
