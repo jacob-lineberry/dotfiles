@@ -101,6 +101,14 @@ run = 'layout floating'
     alt-comma = 'layout accordion horizontal vertical'
     alt-f     = 'fullscreen'
 
+    # Status bar toggle (SketchyBar)
+    alt-b     = 'exec-and-forget sketchybar --bar hidden=toggle'
+
+    # Quick App Launchers (Omarchy Mod-Plane: Alt + Shift)
+    alt-shift-enter = 'exec-and-forget open -a Ghostty'
+    alt-shift-b     = 'exec-and-forget open -a "Google Chrome"'
+    alt-shift-o     = 'exec-and-forget open -a Obsidian'
+
     # Focus navigation (hjkl)
     alt-h = 'focus left'
     alt-j = 'focus down'
