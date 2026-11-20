@@ -62,9 +62,17 @@ jobs:
           if [[ $PLATFORM == macos ]]; then
             test -e ~/.config/aerospace/aerospace.toml
             test -e ~/.config/homebrew/Brewfile
+            test ! -e ~/.config/bash
+            if grep -qs 'config/bash/env.bash' ~/.profile ~/.bash_profile ~/.bashrc; then
+              echo "bootstrap_bash must not touch ~/.profile, ~/.bash_profile or ~/.bashrc on macOS" >&2
+              exit 1
+            fi
           else
             test ! -e ~/.config/aerospace
             test ! -e ~/.config/homebrew
+            test -e ~/.config/bash/env.bash
+            grep -q 'config/bash/env.bash' ~/.profile
+            grep -q 'config/bash/env.bash' ~/.bashrc
           fi
           test -e ~/.config/nvim/init.lua
 
@@ -116,6 +124,17 @@ jobs:
         run: |
           err=$(zsh -lic exit 2>&1 >/dev/null)
           if [[ -n $err ]]; then echo "$err"; exit 1; fi
+
+      # ruff is a mise tool: a login bash must resolve it to the mise shim, which env.bash puts first on PATH
+      - name: bash finds mise tools (Ubuntu)
+        if: matrix.platform == 'ubuntu'
+        run: |
+          got=$(bash -lc 'command -v ruff') || true
+          if [[ $got != */mise/shims/ruff ]]; then
+            echo "login bash resolved ruff to: ${got:-nothing}" >&2
+            for f in ~/.profile ~/.bash_profile ~/.bash_login ~/.bashrc; do [[ -e $f ]] && echo "present: $f" >&2; done
+            exit 1
+          fi
 
       - name: Run check.sh (Ubuntu)
         if: matrix.platform == 'ubuntu'

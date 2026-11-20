@@ -1,4 +1,4 @@
 # load starship prompt
-(( $+commands[starship] )) && eval "$(starship init zsh)"
+(( $+commands[starship] )) && _init_cache starship starship init zsh --print-full-init
 
 

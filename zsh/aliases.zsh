@@ -4,6 +4,13 @@ if (( $+commands[eza] )); then
   alias tree="eza --tree --icons"
 fi
 
+# WSL: the Windows PATH is dropped in .zshenv, so reach the useful Windows tools by full path
+if [[ -n $WSL_DISTRO_NAME ]]; then
+  alias explorer.exe="/mnt/c/Windows/explorer.exe"
+  alias clip.exe="/mnt/c/Windows/System32/clip.exe"
+  alias powershell.exe="/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe"
+fi
+
 alias c="clear"
 alias diff="diff --color=auto"
 (( $+commands[duf] )) && alias df="duf"

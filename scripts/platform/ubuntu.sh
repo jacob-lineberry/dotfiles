@@ -68,6 +68,7 @@ platform_install_packages() {
     eza \
     btop \
     gh \
+    git-delta \
     direnv \
     tmux \
     tree

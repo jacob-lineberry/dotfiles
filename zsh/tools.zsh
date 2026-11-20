@@ -1,4 +1,4 @@
-# fzf (Ctrl-R history, Ctrl-T files, Alt-C cd) and zoxide (z, zi)
+# fzf (Ctrl-T files, Alt-C cd), zoxide (z, zi) and atuin (Ctrl-R history)
 
 if (( $+commands[fzf] )); then
   export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
@@ -16,6 +16,27 @@ fi
 
 # The init scripts need a terminal (they error under `zsh -i -c` without a tty)
 if [[ -t 0 ]]; then
-  (( $+commands[fzf] )) && source <(fzf --zsh)
-  (( $+commands[zoxide] )) && eval "$(zoxide init zsh --cmd cd)"
+  (( $+commands[fzf] )) && _init_cache fzf fzf --zsh
+  (( $+commands[zoxide] )) && _init_cache zoxide zoxide init zsh --cmd cd
+  # after fzf: atuin takes over Ctrl-R (fzf keeps Ctrl-T and Alt-C); the up arrow stays plain history
+  (( $+commands[atuin] )) && _init_cache atuin atuin init zsh --disable-up-arrow
+fi
+
+# Proton Pass SSH agent autostart, opt-in per machine (touch ~/.config/proton-pass-agent.enabled). The common path costs
+# two file reads and a `kill -0`, no process spawn. When the daemon is dead it starts again in the background, under a
+# mkdir lock held 10 s, because `daemon start` returns before the daemon is visible (without it, panes opening
+# together start duplicate daemons). `daemon stop` and crashes leave the socket behind, so liveness comes from the pid
+# file, not the socket. Start it from a login shell, never systemd: pass-cli keeps its key in the kernel keyring, which
+# services cannot see, so they force a logout.
+if [[ -f $XDG_CONFIG_HOME/proton-pass-agent.enabled ]] && (( $+commands[pass-cli] )); then
+  () {
+    local pidfile=$HOME/.ssh/proton-pass-agent.pid pid lock=${XDG_STATE_HOME:-$HOME/.local/state}/proton-pass-agent.lock
+    [[ -r $pidfile && $(<$pidfile) =~ '"pid": *([0-9]+)' ]] && pid=$match[1]
+    [[ -n $pid ]] && kill -0 $pid 2>/dev/null && return
+    zmodload -F zsh/datetime p:EPOCHSECONDS && zmodload -F zsh/stat b:zstat
+    # a lock older than 30 s was left by a shell that died mid-start
+    [[ -d $lock ]] && (( EPOCHSECONDS - $(zstat +mtime $lock) > 30 )) && rmdir $lock
+    mkdir -p ${lock:h} && mkdir $lock 2>/dev/null || return
+    { pass-cli ssh-agent daemon start; sleep 10; rmdir $lock } >/dev/null 2>&1 &!
+  }
 fi

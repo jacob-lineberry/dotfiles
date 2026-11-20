@@ -1,5 +1,8 @@
 [user]
 	name = Jacob Lineberry
+	# no email here on purpose: it comes from ~/.corp/gitconfig, ~/.gitconfig or git/personal, and git refuses to
+	# guess one from the hostname
+	useConfigOnly = true
 [init]
 	defaultBranch = main
 [core]

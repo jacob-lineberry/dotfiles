@@ -34,6 +34,29 @@ bootstrap_zsh() {
   grep -q 'ZDOTDIR/.zshenv' "$HOME/.zshenv" || printf '[[ -r $ZDOTDIR/.zshenv ]] && source $ZDOTDIR/.zshenv\n' >> "$HOME/.zshenv"
 }
 
+# bash reads nothing under ~/.config, so source bash/env.bash from the two files it does read: ~/.profile (login
+# shells) and the top of ~/.bashrc (above Ubuntu's early return for non-interactive shells, so tmux panes and
+# `bash -lc` both get it). Ubuntu only: macOS has no bash package. Idempotent; tool-managed blocks stay untouched.
+bootstrap_bash() {
+  [[ $PLATFORM == ubuntu ]] || return 0
+  # shellcheck disable=SC2016
+  local line='[ -r "$HOME/.config/bash/env.bash" ] && . "$HOME/.config/bash/env.bash"' tmp f
+  # A login bash reads only the first of ~/.bash_profile, ~/.bash_login and ~/.profile (CI runner images ship a
+  # .bash_profile), and dash reads ~/.profile, so cover every one that exists and always ~/.profile.
+  for f in "$HOME/.profile" "$HOME/.bash_profile" "$HOME/.bash_login"; do
+    [[ $f == "$HOME/.profile" || -e $f ]] || continue
+    [[ -e $f ]] || : > "$f"
+    grep -qF '.config/bash/env.bash' "$f" || printf '\n%s\n' "$line" >> "$f"
+  done
+  [[ -e $HOME/.bashrc ]] || : > "$HOME/.bashrc"
+  if ! grep -qF '.config/bash/env.bash' "$HOME/.bashrc"; then
+    tmp=$(mktemp)
+    { printf '%s\n' "$line"; cat "$HOME/.bashrc"; } > "$tmp"
+    cat "$tmp" > "$HOME/.bashrc" # not mv: keeps the file's mode and any symlink
+    rm -f "$tmp"
+  fi
+}
+
 # Stowed packages: the folders listed in scripts/lib/platform.sh, minus the ones other platforms skip
 link_configs() {
   local pkg src ignore ignores=()
@@ -92,6 +115,7 @@ fi
 platform_prerequisites
 mkdir -p "$TARGET"
 bootstrap_zsh
+bootstrap_bash
 link_configs
 link_extras
 if [[ $PACKAGES -eq 1 ]]; then platform_install_packages; fi

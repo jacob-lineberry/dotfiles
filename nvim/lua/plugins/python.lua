@@ -1,5 +1,5 @@
 return {
-  -- ruff and ty come from Homebrew (see the Brewfile), not Mason
+  -- ruff and ty come from mise (see mise/config.toml), not Mason
   {
     "neovim/nvim-lspconfig",
     opts = {

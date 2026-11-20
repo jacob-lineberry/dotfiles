@@ -6,7 +6,6 @@ if [[ -z $HOMEBREW_PREFIX ]]; then
     eval "$(/usr/local/bin/brew shellenv zsh)"
   fi
 fi
-[[ -d "$HOME/.codeium/windsurf/bin" ]] && export PATH="$HOME/.codeium/windsurf/bin:$PATH"
 [[ -d "$HOME/.local/bin" ]] && export PATH="$HOME/.local/bin:$PATH"
 
 # load zsh config files in order: core (sources ~/.corp/env.zsh) first; completion

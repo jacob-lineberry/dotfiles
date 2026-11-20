@@ -1,0 +1,26 @@
+# Local-only shell history search (Ctrl-R). Sync stays off: do not run `atuin register` or `atuin login`.
+# With update_check off and no sync, atuin makes no network requests of its own.
+auto_sync = false
+update_check = false     # the version is pinned in mise/config.toml
+show_whats_new = false   # no post-upgrade note over the search results
+
+# Look and feel: the borderless "compact" style (full draws an uncolorable box) with the search line on top and the
+# newest result first, like fzf --layout=reverse (zsh/tools.zsh). Enter puts the command on the prompt instead of
+# running it, and scrolling past either end does not close the UI.
+style = "compact"
+invert = true
+inline_height = 20
+show_help = false
+show_tabs = false
+show_numeric_shortcuts = false
+max_preview_height = 3
+enter_accept = false
+
+[keys]
+scroll_exits = false
+
+[ui]
+columns = ["duration", "time", "command"]   # add "exit" to see failures at a glance
+
+[theme]
+name = "tokyonight-storm"

@@ -4,7 +4,7 @@ Dotfiles for macOS and Ubuntu (WSL2 is plain Ubuntu: clone inside the instance, 
 
 ## Layout
 
-- Each config package is a top-level folder; paths inside mirror `~/.config/<app>/` (`.stowrc` sets `--target=~/.config --no-folding`). The package list lives in one place, `scripts/lib/platform.sh` (`COMMON_PACKAGES`, plus `MACOS_PACKAGES` that Ubuntu skips).
+- Each config package is a top-level folder; paths inside mirror `~/.config/<app>/` (`.stowrc` sets `--target=~/.config --no-folding`). The package list lives in one place, `scripts/lib/platform.sh` (`COMMON_PACKAGES`, plus `MACOS_PACKAGES` that Ubuntu skips and `UBUNTU_PACKAGES` that macOS skips). `bash/env.bash` is the Ubuntu-only package: bash reads nothing under `~/.config`, so `setup.sh` (`bootstrap_bash`) sources it from `~/.profile`, `~/.bash_profile` and `~/.bash_login` (the ones that exist; a login bash reads only the first) and the top of `~/.bashrc`, in POSIX sh because `~/.profile` is also read by dash.
 - Not stowed: `tuios` (linked per platform), `pi` (settings seeded if absent), `agents` (skills manifest), `macos` (macOS defaults scripts).
 - Scripts: `install.sh` only fetches the repo (installs git if missing) and runs `setup.sh`. `setup.sh` is the orchestrator: detect platform, prerequisites, link, then opt-in `--packages` / `--skills`. `scripts/lib/` holds sourced helpers (`common.sh`, `platform.sh`), `scripts/platform/{macos,ubuntu}.sh` implement the same functions (`platform_prerequisites`, `platform_install_packages`, `platform_tuios_dir`), and `scripts/checks/` holds what pre-commit and CI run. `DOTFILES_PLATFORM=macos|ubuntu` overrides detection.
 - Homebrew is macOS only and never installed automatically; `--packages` expects it there. Ubuntu packages come from apt (and mise for dev CLIs). `MACOS_PACKAGES` also skips the `homebrew` config on Ubuntu.
@@ -23,8 +23,7 @@ Files that tools rewrite at runtime or that hold local state: `~/.claude/setting
 
 ## CLI Tools
 
-Dev CLIs and runtimes are managed by mise (`mise/config.toml`) and pinned across macOS and Linux via `mise/mise.lock`. Tools stay with OS package managers (Homebrew on macOS, apt on Ubuntu) if mise lacks checksum-verified upstream builds across all four platforms or if they must run outside zsh (e.g. `eza`, `btop`, `gh`, `direnv`, `git-delta`, `jless`).
-
+Dev CLIs and runtimes are managed by mise (`mise/config.toml`) and pinned across macOS and Linux via `mise/mise.lock`. Tools stay with OS package managers (Homebrew on macOS, apt on Ubuntu) if mise lacks checksum-verified upstream builds across all four platforms or if they must run outside zsh (e.g. `eza`, `btop`, `gh`, `direnv`, `git-delta`, `jless`). Concretely, `git-delta` has no macOS Intel build (Homebrew on macOS, apt on Ubuntu), and `jless` has no Linux ARM build and is not in apt, so it is macOS-only (Brewfile) and Ubuntu skips it.
 Dependabot does not cover mise. Bump tools manually:
 - `mise outdated`
 - `mise upgrade --bump`

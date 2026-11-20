@@ -1,0 +1,13 @@
+#!/bin/sh
+# WSL stand-in for xdg-open (put on PATH by zsh/.zshenv, WSL only): hands a URL or file to Windows' default app.
+# tuios, gh and other tools call xdg-open by name; Ubuntu on WSL ships none and wslu is not in apt.
+[ $# -eq 1 ] || { echo "usage: xdg-open <url|file>" >&2; exit 2; }
+explorer=/mnt/c/Windows/explorer.exe
+[ -x "$explorer" ] || { echo "xdg-open: $explorer not found (WSL interop disabled?)" >&2; exit 127; }
+case $1 in
+  *://* | mailto:*) target=$1 ;;
+  *) target=$(wslpath -w -- "$1") || exit 1 ;;
+esac
+# explorer.exe exits 1 even when it opened the target, which callers would read as a failure
+"$explorer" "$target"
+exit 0
