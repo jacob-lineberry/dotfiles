@@ -29,6 +29,7 @@ Dependabot does not cover mise. Bump tools manually:
 - `mise upgrade --bump`
 - `mise lock --global`
 `minimum_release_age = "7d"` prevents adopting brand-new releases immediately.
+Never `npm install -g` a tool that mise manages (e.g. `ocr`, `openspec`): it lands in the node install's `bin`, shadows the pinned version and skips the release-age check. Add it to `mise/config.toml` and run `mise install` and `mise lock --global` instead; `mise which <tool>` shows which binary wins.
 
 ## Skills
 

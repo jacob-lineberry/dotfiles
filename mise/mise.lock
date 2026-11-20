@@ -899,11 +899,23 @@ url = "https://nodejs.org/dist/v24.22.3/node-v24.22.3-darwin-x64.tar.gz"
 checksum = "sha256:e612af99f626ab415ea225af6bce5c971feb448cb5cae250bb1c3fa50c5f7d9f"
 url = "https://nodejs.org/dist/v24.22.3/node-v24.22.3-win-x64.zip"
 
+[[tools."npm:@alibaba-group/open-code-review"]]
+version = "1.13.9"
+aube = { path = ".mise/locks/npm-alibaba-group-open-code-review/1.13.9", digest = "sha256:42d2bce968d14720123935900327e0681d40ee30bca5aba867d7f17519ea975c" }
+backend = "npm:@alibaba-group/open-code-review"
+specifiers = ["1.13.9"]
+
+[tools."npm:@alibaba-group/open-code-review".provenance]
+repository = "github.com/alibaba/open-code-review"
+
 [[tools."npm:@fission-ai/openspec"]]
 version = "2.0.0"
 aube = { path = ".mise/locks/npm-fission-ai-openspec/2.0.0", digest = "sha256:85843af60902f2ec4c182aa9bd7d7df3503ec67d37ebf518df192ece21669cb0" }
 backend = "npm:@fission-ai/openspec"
 specifiers = ["2.0.0"]
+
+[tools."npm:@fission-ai/openspec".provenance]
+repository = "github.com/Fission-AI/OpenSpec"
 
 [[tools.pre-commit]]
 version = "4.7.0"

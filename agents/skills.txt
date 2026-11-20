@@ -6,5 +6,6 @@
 #   tuios       -> tuios integration install
 
 OthmanAdi/planning-with-files@v3.0.0 planning-with-files
+alibaba/open-code-review@v1.13.9 open-code-review-delegate
 
 # improve-codebase-architecture: upstream source not recorded, add "<owner/repo@ref> improve-codebase-architecture"

@@ -1,0 +1,7 @@
+{
+  "name": "mise-npm-install",
+  "private": true,
+  "dependencies": {
+    "@alibaba-group/open-code-review": "1.13.9"
+  }
+}
