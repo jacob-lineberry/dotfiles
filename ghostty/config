@@ -32,6 +32,13 @@ split-divider-color = #414868
 # Omarchy-style: super+return opens a new terminal window in the current directory
 keybind = cmd+enter=new_window
 
+# CSI-u encoding: allows TUIs, Neovim, and CLI agents to distinguish Shift+Enter from Enter
+keybind = shift+enter=csi:13;2u
+keybind = alt+shift+enter=csi:13;4u
+
+# Mouse scroll precision
+mouse-scroll-multiplier = 0.95
+
 # Quick terminal (global hotkey needs Accessibility permission)
 # For center on landscape: primary = width, secondary = height
 keybind = global:cmd+ctrl+enter=toggle_quick_terminal
