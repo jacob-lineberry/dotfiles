@@ -10,9 +10,10 @@ for cmd in brew jq; do
   command -v "$cmd" >/dev/null || { echo "$cmd not found: this check needs Homebrew and jq (macOS CI job)" >&2; exit 1; }
 done
 
+# Read the Brewfile directly: `brew bundle list` drops the tap from a cask name (nikitabobko/tap/aerospace -> aerospace)
 formulae=() casks=()
-while IFS= read -r name; do formulae+=("$name"); done < <(brew bundle list --file="$BREWFILE" --formula)
-while IFS= read -r name; do casks+=("$name"); done < <(brew bundle list --file="$BREWFILE" --cask)
+while IFS= read -r name; do formulae+=("$name"); done < <(sed -n 's/^brew "\([^"]*\)".*/\1/p' "$BREWFILE")
+while IFS= read -r name; do casks+=("$name"); done < <(sed -n 's/^cask "\([^"]*\)".*/\1/p' "$BREWFILE")
 
 # Third-party entries are named in full (user/repo/name): tap user/repo first, as brew bundle does
 for name in ${formulae[@]+"${formulae[@]}"} ${casks[@]+"${casks[@]}"}; do
@@ -24,6 +25,7 @@ check() {
   local kind=$1 name=$2 json
   if ! json=$(brew info --json=v2 "--$kind" "$name" 2>&1); then
     echo "$kind not found in Homebrew: $name" >&2
+    printf '%s\n' "$json" >&2
     failed=1
     return
   fi
