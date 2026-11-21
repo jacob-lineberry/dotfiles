@@ -76,4 +76,4 @@ Git identity and signing on a new machine:
 
 ## Checks
 
-`.pre-commit-config.yaml` defines every check (secret scanning, shell and Lua linting, `zsh -n`, a stow simulation for both platforms, workflow linting). `setup.sh` installs it as the git hook, `./check.sh` runs it on all files, and CI (`lint.yml`) runs the same config. `install.yml` runs `setup.sh` twice on clean macOS and Ubuntu runners to prove it works and is idempotent. Hooks and actions are pinned to commit SHAs and updated by Dependabot.
+`.pre-commit-config.yaml` defines every check (secret scanning, shell and Lua linting, `zsh -n`, a stow simulation for both platforms, workflow linting). `setup.sh` installs it as the git hook, `./check.sh` runs it on all files, and CI (`lint.yml`) runs the same config. `install.yml` runs `setup.sh` twice on clean macOS and Ubuntu runners to prove it works and is idempotent, and installs every locked mise tool on both. The full package installs (`./setup.sh --packages`, apt and Homebrew) run there weekly and on demand. Hooks and actions are pinned to commit SHAs and updated by Dependabot.

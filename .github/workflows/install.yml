@@ -6,7 +6,7 @@ on:
   pull_request:
   workflow_dispatch:
   schedule:
-    - cron: "23 6 * * 4" # weekly, to catch drift in runner images and Homebrew
+    - cron: "23 6 * * 4" # weekly: the full installs below, to catch drift in apt, Homebrew and runner images
 
 permissions: {}
 
@@ -82,18 +82,37 @@ jobs:
           git -C "$scratch" init -q
           git -C "$scratch" check-ignore -q oauth_creds.json
 
+      # A tool bump is the most common change here: every tool in the lockfile must install on both platforms
+      - uses: jdx/mise-action@d5574b52816a478f9d4e6529a3f6ff17a8a36785 # v5.2.8
+        env:
+          MISE_GLOBAL_CONFIG_FILE: ${{ github.workspace }}/mise/config.toml
+        with:
+          minimum_release_age: 7d
+          install_args: --locked
+
+      # Resolves every Brewfile entry without installing it; the weekly packages job does the real install
+      - name: Brewfile resolves (macOS)
+        if: matrix.platform == 'macos'
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: ""
+        run: ./scripts/checks/brewfile.sh
+
+  # The clean-machine test: install the whole package list, as on a new machine. Packages rot with time rather than with
+  # commits, so this runs weekly (and on demand: `gh workflow run install.yml --ref <branch>` after editing a package
+  # list) instead of on every pull request, where the jobs above already cover the portable checks.
   packages:
     name: Packages on ${{ matrix.name }}
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 45 # the weekly full Brewfile install on macOS is the slow case
+    timeout-minutes: ${{ matrix.timeout }}
     permissions:
       contents: read
     strategy:
       fail-fast: false
       matrix:
         include:
-          - { name: macOS, os: macos-latest, platform: macos }
-          - { name: Ubuntu, os: ubuntu-latest, platform: ubuntu }
+          - { name: macOS, os: macos-latest, platform: macos, timeout: 45 }
+          - { name: Ubuntu, os: ubuntu-latest, platform: ubuntu, timeout: 20 }
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -104,36 +123,11 @@ jobs:
           path: ~/.local/share/mise
           key: mise-${{ runner.os }}-${{ hashFiles('mise/mise.lock') }}
 
-      - name: Provision packages (Ubuntu)
-        if: matrix.platform == 'ubuntu'
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        run: ./setup.sh --packages
-
-      # Pull requests and pushes stay fast: link, install mise, and check below that the Brewfile still resolves
-      - name: Provision packages (macOS)
-        if: matrix.platform == 'macos' && github.event_name != 'schedule' && github.event_name != 'workflow_dispatch'
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          HOMEBREW_NO_AUTO_UPDATE: ""
-        run: |
-          ./setup.sh
-          brew install mise || brew upgrade mise
-          mise install --locked
-
-      # The weekly run (and a manual dispatch) is the clean-machine test: install the whole Brewfile, as on a new Mac
-      - name: Provision packages (macOS, full Brewfile)
-        if: matrix.platform == 'macos' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
+      - name: Provision packages
         env:
           GITHUB_TOKEN: ${{ github.token }}
           HOMEBREW_NO_AUTO_UPDATE: ""
         run: ./setup.sh --packages
-
-      - name: Brewfile resolves (macOS)
-        if: matrix.platform == 'macos'
-        env:
-          HOMEBREW_NO_AUTO_UPDATE: ""
-        run: ./scripts/checks/brewfile.sh
 
       - name: zsh starts cleanly
         run: |
@@ -150,7 +144,3 @@ jobs:
             for f in ~/.profile ~/.bash_profile ~/.bash_login ~/.bashrc; do [[ -e $f ]] && echo "present: $f" >&2; done
             exit 1
           fi
-
-      - name: Run check.sh (Ubuntu)
-        if: matrix.platform == 'ubuntu'
-        run: ./check.sh
