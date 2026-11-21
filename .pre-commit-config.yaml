@@ -43,7 +43,7 @@ repos:
         language: script
         types: [lua]
         files: ^nvim/
-      # CI skips this hook (SKIP=gitleaks) and scans full history in its own job
+      # CI runs this on the working tree; the secrets job in lint.yml scans every commit
       - id: gitleaks
         name: gitleaks
         entry: scripts/checks/gitleaks.sh
