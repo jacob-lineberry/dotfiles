@@ -33,7 +33,7 @@ mise owns dev CLIs and runtimes (`mise/config.toml`, locked in `mise/mise.lock` 
 - `jless`: no Linux ARM build and not in apt. macOS only.
 - `gcloud`: mise has only a vfox plugin with a same-bucket, optional checksum, and gcloud updates itself. `gcloud-cli` cask on macOS, extrepo `google_cloud` (a `non-free` policy repo) on Ubuntu.
 
-Dependabot does not cover mise. Bump by hand with `mise outdated`, `mise upgrade --bump`, `mise lock --global`; `minimum_release_age = "7d"` holds back brand-new releases.
+Dependabot does not cover mise. Bump by hand with `mise outdated`, `mise upgrade --bump`, `mise lock --global`; `minimum_release_age = "7d"` holds back brand-new releases. npm tools such as `openspec` also get sidecar files in `mise/.mise/locks/<tool>/<version>/`: `mise lock --global` writes them into the repo (checked on mise 2026.11.10), commit them with `mise.lock`, and `git rm` the directory of the version you replaced (`./setup.sh` then drops its dead links).
 
 ## Checks and commits
 
