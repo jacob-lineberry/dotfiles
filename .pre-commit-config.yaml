@@ -16,7 +16,7 @@ repos:
   - repo: https://github.com/rhysd/actionlint
     rev: 914e7df21a07ef503a81201c76d2b11c789d3fca  # frozen: v1.7.12
     hooks:
-      # system Go: pre-commit's own Go download fails behind the corporate TLS proxy
+      # system Go: pre-commit's own Go download fails behind a TLS-intercepting proxy
       - id: actionlint
         language_version: system
 
@@ -28,7 +28,7 @@ repos:
   - repo: local
     hooks:
       # PyPI wheel, not the shellcheck-py repo hook: that one downloads from GitHub at build time
-      # and fails Python's strict TLS verification behind the corporate proxy
+      # and fails Python's strict TLS verification behind a TLS-intercepting proxy
       - id: shellcheck
         name: shellcheck
         entry: shellcheck

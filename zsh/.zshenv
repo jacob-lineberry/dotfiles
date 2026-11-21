@@ -18,6 +18,6 @@ fi
 [[ -d ${XDG_DATA_HOME:-$HOME/.local/share}/mise/shims ]] && export PATH="${XDG_DATA_HOME:-$HOME/.local/share}/mise/shims:$PATH"
 
 # Proton Pass SSH agent: opt in per machine with `touch ~/.config/proton-pass-agent.enabled` (zsh/tools.zsh starts the
-# daemon). A machine without the marker or a running daemon keeps its own agent; ~/.corp/env.zsh can still override.
+# daemon). A machine without the marker or a running daemon keeps its own agent; the private env file can still override.
 [[ -f $XDG_CONFIG_HOME/proton-pass-agent.enabled || -S $HOME/.ssh/proton-pass-agent.sock ]] &&
   export SSH_AUTH_SOCK="$HOME/.ssh/proton-pass-agent.sock"

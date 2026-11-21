@@ -13,7 +13,7 @@ Dotfiles for macOS and Ubuntu (WSL2 is plain Ubuntu), linked into `~/.config` wi
 
 - Never track files that tools rewrite at runtime or that hold local state: `~/.claude/settings.json`, `~/.codex/config.toml`, auth and OAuth files, session databases. Seed a minimal file instead (see the `pi` block in `setup.sh`).
 - Never `npm install -g` a tool that mise manages (e.g. `openspec`): it shadows the pinned version and skips the release-age check. Add it to `mise/config.toml`, then `mise install` and `mise lock --global`; `mise which <tool>` shows which binary wins.
-- Never name `~/.corp/` anywhere new. Private or employer-specific config (`env.zsh`, `gitconfig`, `Brewfile`) lives there, and only the three files that read it mention it.
+- Never name `~/.corp/` anywhere new. Private or employer-specific config (`env.zsh`, `gitconfig`, `Brewfile`) lives there, and only the files that read it (`zsh/core.zsh`, `git/config`, `scripts/platform/macos.sh`) and `README.md`, which documents it, mention it.
 - Ask first before `./setup.sh --packages` (sudo, apt or Homebrew, system config) and before touching `~/.corp/` or `~/.dotfiles-backup/`.
 
 ## Layout
