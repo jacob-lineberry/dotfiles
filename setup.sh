@@ -67,6 +67,43 @@ link_configs() {
   stow ${ignores[@]+"${ignores[@]}"} .
 }
 
+# Lexically resolve . and .. in an absolute path: the target of a dead link does not exist, so readlink -f cannot
+normalize_path() {
+  local path=$1 out='' part
+  while [[ -n $path ]]; do
+    part=${path%%/*}
+    if [[ $path == */* ]]; then path=${path#*/}; else path=''; fi
+    case $part in
+      '' | .) ;;
+      ..) out=${out%/*} ;;
+      *) out+="/$part" ;;
+    esac
+  done
+  printf '%s\n' "${out:-/}"
+}
+
+# stow never removes the links of files deleted from the repo. Drop the dead ones under ~/.config, but only those
+# that point into this repo, and any directory that leaves empty.
+prune_dead_links() {
+  local root link target dest dir
+  root=$(pwd -P)
+  while IFS= read -r -d '' link; do
+    [[ -e $link ]] && continue
+    target=$(readlink "$link")
+    if [[ $target == /* ]]; then
+      dest=$target
+    else
+      dest="$(cd -P "$(dirname "$link")" && pwd -P)/$target"
+    fi
+    dest=$(normalize_path "$dest")
+    [[ $dest == "$root"/* ]] || continue
+    rm -f -- "$link"
+    echo "removed dead link $link"
+    dir=$(dirname "$link")
+    while [[ $dir != "$TARGET" ]] && rmdir "$dir" 2>/dev/null; do dir=$(dirname "$dir"); done
+  done < <(find -H "$TARGET" -type l -print0)
+}
+
 link_extras() {
   # Some machine configs set core.excludesFile to this path, which shadows ~/.config/git/ignore
   link "$DOTFILES/git/ignore" "$HOME/.gitignore_global"
@@ -105,6 +142,7 @@ mkdir -p "$TARGET"
 bootstrap_zsh
 bootstrap_bash
 link_configs
+prune_dead_links
 link_extras
 if [[ $PACKAGES -eq 1 ]]; then platform_install_packages; fi
 
