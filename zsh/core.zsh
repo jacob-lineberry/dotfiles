@@ -53,8 +53,9 @@ if (( $+commands[gpg] )) && [[ -n $TTY ]]; then export GPG_TTY=$TTY; fi
 # Corporate/local environment overrides (loaded silently if present)
 [[ -r "$HOME/.corp/env.zsh" ]] && source "$HOME/.corp/env.zsh"
 
-# Directory colors: Tokyo Night Magenta (#bb9af7)
-export LS_COLORS="di=38;2;187;154;247:${LS_COLORS}"
+# Directory colors: Tokyo Night Magenta (#bb9af7). LS_COLORS is inherited by child shells and the last di= wins, so
+# drop any existing di= before appending ours: stable in nested shells, and not overridden by a parent's dircolors.
+() { local -a c=(${(s.:.)LS_COLORS}); c=(${c:#di=*} 'di=38;2;187;154;247'); export LS_COLORS=${(j.:.)c}; }
 export LSCOLORS="fxfxcxdxbxegedabagacad"
 
 
