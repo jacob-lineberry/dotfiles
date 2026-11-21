@@ -41,4 +41,4 @@ Not vendored. `agents/skills.txt` lists `<owner/repo@tag-or-commit> <skill>`; `.
 
 Hook and action revisions are pinned to full commit SHAs with the version in a comment (`pre-commit autoupdate --freeze`); Dependabot proposes updates after a 7 day cooldown. Hooks must not download at install time (the corporate TLS proxy breaks Python's strict verification): use PyPI wheels via `additional_dependencies`, `language_version: system` for Go, or system tools. Run `./check.sh` from a fresh login shell if a stale parent environment (old `GOROOT`) breaks a hook.
 
-Commit style: `type(scope): lowercase summary`, e.g. `feat(lazygit): add config`.
+Commit style: `type(scope): lowercase summary`, e.g. `feat(lazygit): add config`. No tool attribution in commit messages or PR descriptions: no `Co-authored-by` for bots or agents, no "Generated with" lines.
