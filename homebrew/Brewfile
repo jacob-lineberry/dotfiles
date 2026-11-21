@@ -1,5 +1,5 @@
 # Install with: brew bundle --global
-# Work-only packages live in ~/.corp/Brewfile (not tracked in this repo).
+# Work-only packages live in a private Brewfile kept outside this repo.
 #
 # Dev CLIs pinned in mise/config.toml do not belong here (one owner per tool).
 

@@ -76,7 +76,7 @@ jobs:
           fi
           test -e ~/.config/nvim/init.lua
 
-      - name: git ignore rules apply without ~/.corp
+      - name: git ignore rules apply without private config
         run: |
           scratch=$(mktemp -d)
           git -C "$scratch" init -q
