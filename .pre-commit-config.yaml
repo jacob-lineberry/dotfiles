@@ -37,7 +37,6 @@ repos:
         types: [shell]
         exclude_types: [zsh]
         require_serial: true
-        files: ^(setup\.sh|check\.sh|install\.sh|scripts/.+|macos/.+|sketchybar/.+|bash/.+)$
       - id: stylua
         name: stylua
         entry: scripts/checks/stylua.sh
