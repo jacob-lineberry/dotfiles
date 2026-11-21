@@ -68,9 +68,3 @@ repos:
         language: script
         pass_filenames: false
         files: ^(\.gitignore|git/ignore)$
-      - id: skills-manifest
-        name: skills manifest is pinned
-        entry: scripts/checks/skills-manifest.sh
-        language: script
-        pass_filenames: false
-        files: ^agents/skills\.txt$

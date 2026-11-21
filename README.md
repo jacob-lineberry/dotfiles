@@ -24,7 +24,6 @@ Per-app configs for macOS and Ubuntu (including WSL2), symlinked into `~/.config
 | `yazi`     | `~/.config/yazi`                               |
 | `tuios`    | `~/Library/Application Support/tuios` (macOS), `~/.config/tuios` (Ubuntu) |
 | `pi`       | `~/.pi/agent/settings.json` (seeded if absent) |
-| `agents`   | `agents/skills.txt`, installed by `--skills`   |
 
 ## Install
 
@@ -49,7 +48,6 @@ curl -fsSL https://raw.githubusercontent.com/jacob-lineberry/dotfiles/main/insta
 Optional flags:
 
 - `--packages` installs the platform's packages, then `mise install --locked`. On macOS: `homebrew/Brewfile` (and `~/.corp/Brewfile`, if present); install Homebrew from <https://brew.sh> first. On Ubuntu: apt packages, plus mise and the Google Cloud CLI via `extrepo` (which turns on its `non-free` policy for Google's repo).
-- `--skills` installs the pinned agent skills in `agents/skills.txt` into `~/.agents/skills`, linked for Claude Code.
 
 To update: `git pull && ./setup.sh`. To unlink one app: `stow -D <folder>` from the repo.
 

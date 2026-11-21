@@ -4,7 +4,6 @@
 --ignore=DS_Store
 --ignore=README.md
 --ignore=AGENTS[.]md
---ignore=^agents$
 --ignore=^scripts$
 --ignore=install[.]sh
 --ignore=[.]pre-commit-config[.]yaml
@@ -15,9 +14,5 @@
 --ignore=[.]github
 --ignore=[.]git
 --ignore=[.]gitignore
---ignore=[.]planning
---ignore=findings[.]md
---ignore=progress[.]md
---ignore=task_plan[.]md
 --ignore=tuios
 --ignore=pi
