@@ -80,6 +80,16 @@ platform_install_packages() {
     apt_sudo apt-get install -y -qq mise
   fi
 
+  # extrepo ships with only the "main" license policy enabled; Google's repo is "non-free"
+  if ! have gcloud; then
+    step "extrepo: enable google_cloud"
+    apt_sudo sed -i 's/^# - non-free$/- non-free/' /etc/extrepo/config.yaml
+    grep -qx -- '- non-free' /etc/extrepo/config.yaml || die "enable the non-free policy in /etc/extrepo/config.yaml"
+    apt_sudo extrepo enable google_cloud
+    apt_sudo apt-get update -qq
+    apt_sudo apt-get install -y -qq google-cloud-cli
+  fi
+
   install_mise_tools
 }
 
