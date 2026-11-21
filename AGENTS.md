@@ -12,7 +12,7 @@ Dotfiles for macOS and Ubuntu (WSL2 is plain Ubuntu), linked into `~/.config` wi
 ## Boundaries
 
 - Never track files that tools rewrite at runtime or that hold local state: `~/.claude/settings.json`, `~/.codex/config.toml`, auth and OAuth files, session databases. Seed a minimal file instead (see the `pi` block in `setup.sh`).
-- Never `npm install -g` a tool that mise manages (e.g. `openspec`): it shadows the pinned version and skips the release-age check. Add it to `mise/config.toml`, then `mise install` and `mise lock --global`; `mise which <tool>` shows which binary wins.
+- Never install a tool that mise manages with `npm install -g`, pip or brew: it shadows the pinned version and skips the release-age check. Add it to `mise/config.toml`, then `mise install` and `mise lock --global`; `mise which <tool>` shows which binary wins. No `npm:` tools in mise: they need sidecar lockfiles (`mise/.mise/locks/`) without per-platform checksums, so install those per project.
 - Never name `~/.corp/` anywhere new. Private or employer-specific config (`env.zsh`, `gitconfig`, `Brewfile`) lives there, and only the files that read it (`zsh/core.zsh`, `git/config`, `scripts/platform/macos.sh`) and `README.md`, which documents it, mention it.
 - Ask first before `./setup.sh --packages` (sudo, apt or Homebrew, system config) and before touching `~/.corp/` or `~/.dotfiles-backup/`.
 
@@ -33,7 +33,7 @@ mise owns dev CLIs and runtimes (`mise/config.toml`, locked in `mise/mise.lock` 
 - `jless`: no Linux ARM build and not in apt. macOS only.
 - `gcloud`: mise has only a vfox plugin with a same-bucket, optional checksum, and gcloud updates itself. `gcloud-cli` cask on macOS, extrepo `google_cloud` (a `non-free` policy repo) on Ubuntu.
 
-Dependabot does not cover mise. Bump by hand with `mise outdated`, `mise upgrade --bump`, `mise lock --global`; `minimum_release_age = "7d"` holds back brand-new releases. npm tools such as `openspec` also get sidecar files in `mise/.mise/locks/<tool>/<version>/`: `mise lock --global` writes them into the repo (checked on mise 2026.11.10), commit them with `mise.lock`, and `git rm` the directory of the version you replaced (`./setup.sh` then drops its dead links).
+Dependabot does not cover mise. Bump by hand with `mise outdated`, `mise upgrade --bump`, `mise lock --global`; `minimum_release_age = "7d"` holds back brand-new releases.
 
 ## Checks and commits
 

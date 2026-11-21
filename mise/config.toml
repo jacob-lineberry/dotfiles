@@ -2,7 +2,6 @@
 go = "1.26"
 node = "24"
 terraform = "1.15"
-"npm:@fission-ai/openspec" = "2.0.0"
 fzf = "0.75"
 "github:atuinsh/atuin" = "18"
 "aqua:neovim/neovim" = "0.12"
