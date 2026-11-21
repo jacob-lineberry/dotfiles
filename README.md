@@ -1,6 +1,6 @@
 # Dotfiles
 
-Per-app configs for macOS and Ubuntu (including WSL2), symlinked into `~/.config` with [GNU Stow](https://www.gnu.org/software/stow/). Each top-level folder is one app; paths inside mirror their path under `~/.config`. `aerospace`, `ghostty`, `homebrew` and `sketchybar` are macOS only; `bash` is Ubuntu only. `--packages` installs each platform's packages (Homebrew on macOS; apt and mise on Ubuntu).
+Per-app configs for macOS and Ubuntu (including WSL2), symlinked into `~/.config` with [GNU Stow](https://www.gnu.org/software/stow/). Each top-level folder is one app; paths inside mirror their path under `~/.config`. `aerospace`, `ghostty`, `homebrew` and `sketchybar` are macOS only; `bash` is Ubuntu only.
 
 | Folder     | Installed to                                   |
 | ---------- | ---------------------------------------------- |
@@ -10,6 +10,7 @@ Per-app configs for macOS and Ubuntu (including WSL2), symlinked into `~/.config
 | `starship` | `~/.config/starship/starship.toml`             |
 | `aerospace`| `~/.config/aerospace/aerospace.toml`          |
 | `fastfetch`| `~/.config/fastfetch/config.jsonc`            |
+| `git`      | `~/.config/git`                                |
 | `ghostty`  | `~/.config/ghostty`                            |
 | `atuin`    | `~/.config/atuin/config.toml` (local-only shell history, Ctrl-R) |
 | `bat`      | `~/.config/bat`                                |
@@ -38,34 +39,33 @@ Or bootstrap a fresh machine in one line (`install.sh` only clones the repo, ins
 curl -fsSL https://raw.githubusercontent.com/jacob-lineberry/dotfiles/main/install.sh | bash -s -- --packages
 ```
 
-`setup.sh` detects macOS or Ubuntu, installs what it needs to run (stow via Homebrew on macOS; git, curl, stow and zsh via apt on Ubuntu), moves any conflicting existing file into `~/.dotfiles-backup/<timestamp>/`, runs `stow`, writes `~/.zshenv` (sets `ZDOTDIR` and sources `zsh/.zshenv`) if missing, and links the apps that do not read `~/.config`. On Ubuntu it also adds one line that sources `~/.config/bash/env.bash` to `~/.profile`, `~/.bashrc` and, if they exist, `~/.bash_profile` and `~/.bash_login`, so bash finds `~/.local/bin` and the mise shims. It is safe to re-run.
+`setup.sh` is safe to re-run. It:
 
-- `--packages` installs the platform's packages, followed by `mise install --locked`. On macOS that is `homebrew/Brewfile` (and `~/.corp/Brewfile`, if present); Homebrew itself is not installed for you, get it from <https://brew.sh> first. On Ubuntu it installs apt packages, enables and installs mise via `extrepo`, and installs the locked mise tools.
-- `--skills` installs the agent skills listed in `agents/skills.txt` into `~/.agents/skills`, linked for Claude Code. Skills are not vendored, and each manifest line must be pinned to a tag or commit.
+- detects macOS or Ubuntu and installs what it needs (stow via Homebrew on macOS; git, curl, stow and zsh via apt on Ubuntu),
+- moves any conflicting file into `~/.dotfiles-backup/<timestamp>/`,
+- runs `stow`, writes `~/.zshenv` if missing (sets `ZDOTDIR`), and links the apps that do not read `~/.config`,
+- on Ubuntu, makes bash load `~/.config/bash/env.bash` so it finds `~/.local/bin` and the mise shims.
 
-On WSL2 clone inside the Ubuntu instance (not under `/mnt/c`), where symlinks behave. zsh drops the `/mnt/c/...` Windows directories from `PATH` (`zsh/.zshenv`), because scanning them over the 9P mount added ~40 ms to every new shell; `zsh/aliases.zsh` keeps `explorer.exe`, `clip.exe` and `powershell.exe` reachable by full path. WezTerm on the Windows side is not managed by this repo.
+Optional flags:
 
-`setup.sh` also links `git/ignore` to `~/.gitignore_global`, because a machine-specific git config can point `core.excludesFile` there and shadow `~/.config/git/ignore`.
+- `--packages` installs the platform's packages, then `mise install --locked`. On macOS: `homebrew/Brewfile` (and `~/.corp/Brewfile`, if present); install Homebrew from <https://brew.sh> first. On Ubuntu: apt packages, plus mise and the Google Cloud CLI via `extrepo` (which turns on its `non-free` policy for Google's repo).
+- `--skills` installs the pinned agent skills in `agents/skills.txt` into `~/.agents/skills`, linked for Claude Code.
 
-`.stowrc` uses `--no-folding`, so only individual files are linked and runtime files (shell history, k9s state) stay out of the repo.
+To update: `git pull && ./setup.sh`. To unlink one app: `stow -D <folder>` from the repo.
 
-### Scripts
-
-| Path | Role |
-| --- | --- |
-| `install.sh` | fetch the repo, then run `setup.sh` |
-| `setup.sh` | orchestrator: platform, prerequisites, link, `--packages`, `--skills`, git hook |
-| `scripts/lib/` | sourced helpers and the package list (`platform.sh`) |
-| `scripts/platform/` | `macos.sh` and `ubuntu.sh`, the same functions per platform |
-| `scripts/checks/` | what pre-commit and CI run |
+On WSL2, clone inside the Ubuntu instance (not under `/mnt/c`), where symlinks behave. zsh drops the `/mnt/c/...` Windows directories from `PATH` to keep startup fast; `zsh/aliases.zsh` keeps `explorer.exe`, `clip.exe` and `powershell.exe` reachable by full path. WezTerm on the Windows side is not managed by this repo.
 
 ## Machine-specific config
 
-Anything private or specific to one machine stays out of this repo. `zsh/core.zsh` silently sources `~/.corp/env.zsh` if it exists; put local environment variables, certificates and PATH entries there. Dotfiles commits are unsigned (`git/personal` sets `commit.gpgsign = false`); corporate repositories keep signing through `~/.corp/gitconfig`.
+Anything private or specific to one machine stays out of this repo. `zsh/core.zsh` silently sources `~/.corp/env.zsh` if it exists; put local environment variables, certificates and PATH entries there. Corporate repositories sign through `~/.corp/gitconfig`.
 
-The Proton Pass SSH agent is opt-in per machine: `touch ~/.config/proton-pass-agent.enabled` makes `zsh/.zshenv` export `SSH_AUTH_SOCK` and `zsh/tools.zsh` start `pass-cli ssh-agent daemon start` in the background when it is not running. Keep SSH keys as Proton Pass SSH Key items (`pass-cli item create ssh-key generate --title <name> --vault-name <vault>`) and only the public halves on disk. Start the daemon from a login shell: under systemd, pass-cli cannot read its key from the kernel keyring and forces a logout. A machine without the marker (a work laptop) keeps its own agent.
+The Proton Pass SSH agent is opt-in per machine: `touch ~/.config/proton-pass-agent.enabled` makes zsh export `SSH_AUTH_SOCK` and start `pass-cli ssh-agent daemon start` if it is not running. Keep SSH keys as Proton Pass SSH Key items (`pass-cli item create ssh-key generate --title <name> --vault-name <vault>`), with only the public halves on disk. Start the daemon from a login shell: under systemd, pass-cli cannot read its key from the kernel keyring and forces a logout. Without the marker (a work laptop), the machine keeps its own agent.
 
-`git/config` sets only the name and `user.useConfigOnly`, so a fresh machine needs a `user.email` before git will commit: set it in `~/.gitconfig`, or in `~/.corp/gitconfig` on a work machine. Git reads `~/.gitconfig` after `git/config`, so an email there also applies in this repo and overrides the address from `git/personal`; use the same noreply address in both if you want them identical. Signing is per machine as well: a personal machine signs with an SSH key by setting `gpg.format = ssh`, `user.signingkey` (the `.pub` path), `commit.gpgsign` and `tag.gpgSign` in `~/.gitconfig` (which also overrides the `gpgsign = false` in `git/personal`), plus `gpg.ssh.allowedSignersFile` so `git log --show-signature` can verify locally. Add the public key to GitHub as a Signing Key (`gh ssh-key add <key>.pub --type signing`, which needs `gh auth refresh -s admin:ssh_signing_key`), and keep the commit email set to the noreply address so GitHub marks the commits verified.
+Git identity and signing on a new machine:
+
+1. `git/config` sets only the name and `user.useConfigOnly`, so git refuses to commit until `user.email` is set: in `~/.gitconfig`, or in `~/.corp/gitconfig` on a work machine. In this repo `git/personal` supplies the noreply address, but an email in `~/.gitconfig` overrides it, so use the same address in both.
+2. Dotfiles commits are unsigned (`git/personal` sets `commit.gpgsign = false`) unless `~/.gitconfig` turns signing on. To sign with SSH, set `gpg.format = ssh`, `user.signingkey` (the `.pub` path), `commit.gpgsign`, `tag.gpgSign` and `gpg.ssh.allowedSignersFile` there.
+3. Add the key to GitHub as a signing key (`gh auth refresh -s admin:ssh_signing_key`, then `gh ssh-key add <key>.pub --type signing`) and commit with the noreply address so GitHub marks commits verified.
 
 ## macOS System Defaults
 
@@ -78,6 +78,4 @@ The Proton Pass SSH agent is opt-in per machine: `touch ~/.config/proton-pass-ag
 
 ## Checks
 
-`.pre-commit-config.yaml` defines every check (secret scanning, shell and Lua linting, `zsh -n`, a stow simulation for both platforms, workflow linting). `setup.sh` installs it as the git hook, and `./check.sh` runs it on all files.
-
-CI (`lint.yml`, "Lint & Security") runs the same config with pinned, least-privilege actions. `install.yml` ("Install Smoke Test") runs `setup.sh` twice on clean macOS and Ubuntu runners to prove it works and is idempotent. Hook and action versions are pinned to commit SHAs and updated by Dependabot.
+`.pre-commit-config.yaml` defines every check (secret scanning, shell and Lua linting, `zsh -n`, a stow simulation for both platforms, workflow linting). `setup.sh` installs it as the git hook, `./check.sh` runs it on all files, and CI (`lint.yml`) runs the same config. `install.yml` runs `setup.sh` twice on clean macOS and Ubuntu runners to prove it works and is idempotent. Hooks and actions are pinned to commit SHAs and updated by Dependabot.
