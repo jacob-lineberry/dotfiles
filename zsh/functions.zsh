@@ -1,6 +1,7 @@
+# go test coverage report in the browser; the profile is removed even when tests fail or the run is interrupted
 cover() {
-    local t="/tmp/go-cover.$$.tmp"
-    go test -coverprofile="$t" "$@" && go tool cover -html="$t" && unlink "$t"
+    local t; t=$(mktemp -t go-cover.XXXXXX) || return
+    { go test -coverprofile="$t" "$@" && go tool cover -html="$t"; } always { command rm -f -- "$t"; }
 }
 
 # yazi wrapper: exiting with 'q' changes directory to last visited; 'Q' exits without changing directory
