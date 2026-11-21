@@ -67,6 +67,8 @@ cask "caffeine"
 cask "clocker"
 cask "font-jetbrains-mono-nerd-font"
 cask "font-maple-mono-nf"
+# Set of tools to manage resources and applications hosted on Google Cloud
+cask "gcloud-cli"
 # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
 # Knowledge base that works on top of a local folder of plain text Markdown files

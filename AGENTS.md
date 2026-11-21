@@ -1,44 +1,48 @@
 # Dotfiles
 
-Dotfiles for macOS and Ubuntu (WSL2 is plain Ubuntu: clone inside the instance, WezTerm on Windows is not managed here), linked with GNU Stow. Public repo: no secrets, hostnames or employer details.
+Dotfiles for macOS and Ubuntu (WSL2 is plain Ubuntu), linked into `~/.config` with GNU Stow. Public repo: no secrets, hostnames or employer details.
+
+## Commands
+
+- `./check.sh`: every pre-commit hook on all files; `pre-commit run --files <file>...` for a few.
+- `./setup.sh`: idempotent; re-run it after adding, moving or removing linked files.
+- `scripts/checks/stow.sh`: simulates stow for both platforms against an empty target.
+- `zsh -lic exit`: must print nothing to stderr (CI checks this).
+
+## Boundaries
+
+- Never track files that tools rewrite at runtime or that hold local state: `~/.claude/settings.json`, `~/.codex/config.toml`, auth and OAuth files, session databases. Seed a minimal file instead (see the `pi` block in `setup.sh`).
+- Never `npm install -g` a tool that mise manages (e.g. `ocr`, `openspec`): it shadows the pinned version and skips the release-age check. Add it to `mise/config.toml`, then `mise install` and `mise lock --global`; `mise which <tool>` shows which binary wins.
+- Never name `~/.corp/` anywhere new. Private or employer-specific config (`env.zsh`, `gitconfig`, `Brewfile`) lives there, and only the three files that read it mention it.
+- Ask first before `./setup.sh --packages` (sudo, apt or Homebrew, system config) and before touching `~/.corp/` or `~/.dotfiles-backup/`.
 
 ## Layout
 
-- Each config package is a top-level folder; paths inside mirror `~/.config/<app>/` (`.stowrc` sets `--target=~/.config --no-folding`). The package list lives in one place, `scripts/lib/platform.sh` (`COMMON_PACKAGES`, plus `MACOS_PACKAGES` that Ubuntu skips and `UBUNTU_PACKAGES` that macOS skips). `bash/env.bash` is the Ubuntu-only package: bash reads nothing under `~/.config`, so `setup.sh` (`bootstrap_bash`) sources it from `~/.profile`, `~/.bash_profile` and `~/.bash_login` (the ones that exist; a login bash reads only the first) and the top of `~/.bashrc`, in POSIX sh because `~/.profile` is also read by dash.
-- Not stowed: `tuios` (linked per platform), `pi` (settings seeded if absent), `agents` (skills manifest), `macos` (macOS defaults scripts).
-- Scripts: `install.sh` only fetches the repo (installs git if missing) and runs `setup.sh`. `setup.sh` is the orchestrator: detect platform, prerequisites, link, then opt-in `--packages` / `--skills`. `scripts/lib/` holds sourced helpers (`common.sh`, `platform.sh`), `scripts/platform/{macos,ubuntu}.sh` implement the same functions (`platform_prerequisites`, `platform_install_packages`, `platform_tuios_dir`), and `scripts/checks/` holds what pre-commit and CI run. `DOTFILES_PLATFORM=macos|ubuntu` overrides detection.
-- Homebrew is macOS only and never installed automatically; `--packages` expects it there. Ubuntu packages come from apt (and mise for dev CLIs). `MACOS_PACKAGES` also skips the `homebrew` config on Ubuntu.
-- A new top-level file or folder that is not a config package needs an ignore line in `.stowrc`; a new config package goes in `scripts/lib/platform.sh`. `scripts/checks/stow.sh` simulates stow for both platforms against an empty target and fails on anything unexpected, so a stray cannot silently land in `~/.config`. `setup.sh` moves any real file at a package's target path into `~/.dotfiles-backup`.
-- `--ignore` is a suffix regex on the file name: anchor it (`^agents$`) so it cannot match other names.
+- Each config package is a top-level folder mirroring `~/.config/<app>/` (`.stowrc`: `--target=~/.config --no-folding`). Packages are listed only in `scripts/lib/platform.sh`: `COMMON_PACKAGES`, `MACOS_PACKAGES`, `UBUNTU_PACKAGES`.
+- A new config package goes in `platform.sh`; any other new top-level file or folder needs an ignore line in `.stowrc`. `--ignore` is a suffix regex on the file name, so anchor it (`^agents$`).
+- Not stowed: `tuios` (linked per platform), `pi` (settings seeded if absent), `agents` (skills manifest), `macos` (defaults scripts).
+- `bash/env.bash` (Ubuntu only) is sourced from `~/.profile`, which dash also reads, so it must stay POSIX sh.
+- `install.sh` only fetches the repo and runs `setup.sh`. `scripts/platform/{macos,ubuntu}.sh` implement the same functions (`platform_prerequisites`, `platform_install_packages`, `platform_tuios_dir`); `DOTFILES_PLATFORM=macos|ubuntu` overrides detection.
+- Machine-specific git ignore patterns go in that repo's `.git/info/exclude`, not `git/ignore`.
 
-## Machine-specific config
+## CLI tools
 
-Private or employer-specific config stays out of the repo and lives in `~/.corp/` (`env.zsh`, `gitconfig`, `Brewfile`). The repo only names that directory in the three places that read it; keep it that way.
+mise owns dev CLIs and runtimes (`mise/config.toml`, locked in `mise/mise.lock` for all four platforms). A tool stays with the OS package manager (Homebrew on macOS, which `setup.sh` never installs; apt on Ubuntu) if mise has no checksum-verified upstream build on all four platforms or the tool must work outside zsh (`eza`, `btop`, `gh`, `direnv`). Exceptions worth knowing:
 
-A machine config may set `core.excludesFile` to `~/.gitignore_global`, which shadows `~/.config/git/ignore`; `setup.sh` links `git/ignore` there too, so the public ignore rules apply either way. Machine-specific ignore patterns belong in that repo's `.git/info/exclude`.
+- `git-delta`: no macOS Intel build. Homebrew on macOS, apt on Ubuntu.
+- `jless`: no Linux ARM build and not in apt. macOS only.
+- `gcloud`: mise has only a vfox plugin with a same-bucket, optional checksum, and gcloud updates itself. `gcloud-cli` cask on macOS, extrepo `google_cloud` (a `non-free` policy repo) on Ubuntu.
 
-## Do not track
-
-Files that tools rewrite at runtime or that hold local state: `~/.claude/settings.json`, `~/.codex/config.toml`, auth and OAuth files, session databases. Seed a minimal file instead (see the `pi` block in `setup.sh`).
-
-## CLI Tools
-
-Dev CLIs and runtimes are managed by mise (`mise/config.toml`) and pinned across macOS and Linux via `mise/mise.lock`. Tools stay with OS package managers (Homebrew on macOS, apt on Ubuntu) if mise lacks checksum-verified upstream builds across all four platforms or if they must run outside zsh (e.g. `eza`, `btop`, `gh`, `direnv`, `git-delta`, `jless`). Concretely, `git-delta` has no macOS Intel build (Homebrew on macOS, apt on Ubuntu), and `jless` has no Linux ARM build and is not in apt, so it is macOS-only (Brewfile) and Ubuntu skips it.
-Dependabot does not cover mise. Bump tools manually:
-- `mise outdated`
-- `mise upgrade --bump`
-- `mise lock --global`
-`minimum_release_age = "7d"` prevents adopting brand-new releases immediately.
-Never `npm install -g` a tool that mise manages (e.g. `ocr`, `openspec`): it lands in the node install's `bin`, shadows the pinned version and skips the release-age check. Add it to `mise/config.toml` and run `mise install` and `mise lock --global` instead; `mise which <tool>` shows which binary wins.
+Dependabot does not cover mise. Bump by hand with `mise outdated`, `mise upgrade --bump`, `mise lock --global`; `minimum_release_age = "7d"` holds back brand-new releases.
 
 ## Skills
 
-Not vendored. `agents/skills.txt` lists `<owner/repo@tag-or-commit> <skill>`; `./setup.sh --skills` installs them globally with the pinned `skills` CLI. `openspec-*` and `tuios` skills are regenerated by their own tools (`openspec update`, `tuios integration install`).
+Not vendored. `agents/skills.txt` lists `<owner/repo@tag-or-commit> <skill>`, installed with `./setup.sh --skills`. `openspec-*` and `tuios` skills are regenerated by their own tools (`openspec update`, `tuios integration install`).
 
-## Verify
+## Checks and commits
 
-`.pre-commit-config.yaml` is the single source of truth: `setup.sh` installs it as the git hook, `./check.sh` runs it on all files, and CI runs the same config (`.github/workflows/lint.yml`, "Lint & Security"; gitleaks and stylua run as separate CI steps). `setup.sh` is idempotent and `.github/workflows/install.yml` ("Install Smoke Test") runs it twice on clean macOS and Ubuntu runners; re-run it after changing links.
-
-Hook and action revisions are pinned to full commit SHAs with the version in a comment (`pre-commit autoupdate --freeze`); Dependabot proposes updates after a 7 day cooldown. Hooks must not download at install time (the corporate TLS proxy breaks Python's strict verification): use PyPI wheels via `additional_dependencies`, `language_version: system` for Go, or system tools. Run `./check.sh` from a fresh login shell if a stale parent environment (old `GOROOT`) breaks a hook.
-
-Commit style: `type(scope): lowercase summary`, e.g. `feat(lazygit): add config`. No tool attribution in commit messages or PR descriptions: no `Co-authored-by` for bots or agents, no "Generated with" lines.
+- `.pre-commit-config.yaml` is the single source of truth: the git hook, `./check.sh` and CI (`lint.yml`) all run it. `install.yml` runs `setup.sh` twice on clean macOS and Ubuntu runners.
+- Hooks and actions are pinned to full commit SHAs with the version in a comment (`pre-commit autoupdate --freeze`).
+- Hooks must not download at install time (a TLS-intercepting proxy breaks Python's strict verification): use PyPI wheels via `additional_dependencies`, `language_version: system` for Go, or system tools.
+- If a hook fails on a stale environment (old `GOROOT`), run `./check.sh` from a fresh login shell.
+- Commit style: `type(scope): lowercase summary`, e.g. `feat(lazygit): add config`. No tool attribution in commit messages or PR descriptions: no `Co-authored-by` for bots or agents, no "Generated with" lines.
