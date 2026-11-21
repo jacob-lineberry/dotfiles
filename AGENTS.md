@@ -28,6 +28,7 @@ Dependabot does not cover mise. Bump by hand: `mise outdated`, `mise upgrade --b
 
 ## Checks and commits
 
+- The full package installs (`./setup.sh --packages` on macOS and Ubuntu) run weekly in CI, not on pull requests: after editing a package list (`homebrew/Brewfile`, the apt list in `scripts/platform/ubuntu.sh`), run `gh workflow run install.yml --ref <branch>` before merging.
 - Pin hooks and actions to full commit SHAs with the version in a comment (`pre-commit autoupdate --freeze`).
 - Hooks must not download at install time (a TLS-intercepting proxy breaks Python's strict verification): use PyPI wheels via `additional_dependencies`, `language_version: system` for Go, or system tools.
 - If a hook fails on a stale environment (old `GOROOT`), run `./check.sh` from a fresh login shell.
