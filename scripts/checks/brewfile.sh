@@ -11,13 +11,18 @@ for cmd in brew jq; do
 done
 
 # Read the Brewfile directly: `brew bundle list` drops the tap from a cask name (nikitabobko/tap/aerospace -> aerospace)
-formulae=() casks=()
-while IFS= read -r name; do formulae+=("$name"); done < <(sed -n 's/^brew "\([^"]*\)".*/\1/p' "$BREWFILE")
-while IFS= read -r name; do casks+=("$name"); done < <(sed -n 's/^cask "\([^"]*\)".*/\1/p' "$BREWFILE")
+formulae=() casks=() trusted=()
+while IFS= read -r name; do formulae+=("$name"); done < <(sed -n -E 's/^brew "([^"]*)".*/\1/p' "$BREWFILE")
+while IFS= read -r name; do casks+=("$name"); done < <(sed -n -E 's/^cask "([^"]*)".*/\1/p' "$BREWFILE")
+while IFS= read -r name; do trusted+=("$name"); done < <(sed -n -E 's/^(brew|cask) "([^"]*)".*trusted: true.*/\2/p' "$BREWFILE")
 
-# Third-party entries are named in full (user/repo/name): tap user/repo first, as brew bundle does
+# Third-party entries are named in full (user/repo/name): tap user/repo first, and trust it only where the Brewfile
+# says trusted: true, as brew bundle does (Homebrew refuses to load from an untrusted tap)
 for name in ${formulae[@]+"${formulae[@]}"} ${casks[@]+"${casks[@]}"}; do
-  if [[ $name == */*/* ]]; then brew tap "${name%/*}" >/dev/null; fi
+  [[ $name == */*/* ]] && brew tap "${name%/*}" >/dev/null
+done
+for name in ${trusted[@]+"${trusted[@]}"}; do
+  [[ $name == */*/* ]] && brew trust "${name%/*}" >/dev/null
 done
 
 failed=0
