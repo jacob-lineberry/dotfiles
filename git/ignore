@@ -7,6 +7,7 @@
 !.env.sample
 !.env.template
 .envrc
+.direnv/
 auth.json
 oauth_creds.json
 google_accounts.json
