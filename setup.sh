@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Link the dotfiles with stow; --packages and --skills opt in to packages and agent skills.
-# Platforms: macOS and Ubuntu (WSL2 included). Usage: ./setup.sh [--packages] [--skills]
+# Link the dotfiles with stow; --packages opts in to packages.
+# Platforms: macOS and Ubuntu (WSL2 included). Usage: ./setup.sh [--packages]
 set -euo pipefail
 
 cd "$(dirname "$0")"
@@ -13,12 +13,10 @@ source "$DOTFILES/scripts/lib/common.sh"
 source "$DOTFILES/scripts/lib/platform.sh"
 
 PACKAGES=0
-SKILLS=0
 for arg in "$@"; do
   case $arg in
     --packages) PACKAGES=1 ;;
-    --skills) SKILLS=1 ;;
-    *) die "usage: setup.sh [--packages] [--skills]" ;;
+    *) die "usage: setup.sh [--packages]" ;;
   esac
 done
 
@@ -86,16 +84,6 @@ link_extras() {
   fi
 }
 
-# Skills run third-party content: each manifest line is "<source> <skill>", pinned to a tag or commit
-install_skills() {
-  have npx || die "npx not found (mise install)"
-  local source skill
-  while read -r source skill; do
-    [[ -z $source || $source == \#* ]] && continue
-    npx --yes skills@1.8.1 add "$source" --skill "$skill" -g -a universal -a claude-code -y </dev/null
-  done < "$DOTFILES/agents/skills.txt"
-}
-
 # Git hooks run through pre-commit (.pre-commit-config.yaml); drop the old check.sh symlink hook first
 install_hooks() {
   [[ -d $DOTFILES/.git ]] || return 0
@@ -119,7 +107,6 @@ bootstrap_bash
 link_configs
 link_extras
 if [[ $PACKAGES -eq 1 ]]; then platform_install_packages; fi
-if [[ $SKILLS -eq 1 ]]; then install_skills; fi
 
 # Rebuild bat theme cache if bat is installed
 if have bat; then bat cache --build >/dev/null 2>&1 || true; fi

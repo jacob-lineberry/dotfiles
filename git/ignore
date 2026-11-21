@@ -16,9 +16,6 @@ CLAUDE.local.md
 AGENTS.override.md
 *.sqlite-*
 .playwright-cli
-findings.md
-progress.md
-task_plan.md
 mise.local.toml
 .mise.local.toml
 mise.local.lock
