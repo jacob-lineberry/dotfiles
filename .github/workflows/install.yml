@@ -85,7 +85,7 @@ jobs:
   packages:
     name: Packages on ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 20
+    timeout-minutes: 45 # the weekly full Brewfile install on macOS is the slow case
     permissions:
       contents: read
     strategy:
@@ -110,8 +110,9 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: ./setup.sh --packages
 
+      # Pull requests and pushes stay fast: link, install mise, and check below that the Brewfile still resolves
       - name: Provision packages (macOS)
-        if: matrix.platform == 'macos'
+        if: matrix.platform == 'macos' && github.event_name != 'schedule' && github.event_name != 'workflow_dispatch'
         env:
           GITHUB_TOKEN: ${{ github.token }}
           HOMEBREW_NO_AUTO_UPDATE: ""
@@ -119,6 +120,20 @@ jobs:
           ./setup.sh
           brew install mise || brew upgrade mise
           mise install --locked
+
+      # The weekly run (and a manual dispatch) is the clean-machine test: install the whole Brewfile, as on a new Mac
+      - name: Provision packages (macOS, full Brewfile)
+        if: matrix.platform == 'macos' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          HOMEBREW_NO_AUTO_UPDATE: ""
+        run: ./setup.sh --packages
+
+      - name: Brewfile resolves (macOS)
+        if: matrix.platform == 'macos'
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: ""
+        run: ./scripts/checks/brewfile.sh
 
       - name: zsh starts cleanly
         run: |
