@@ -1,4 +1,4 @@
-name: Install Smoke Test
+name: install
 
 on:
   push:
@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   install:
-    name: Install on ${{ matrix.name }}
+    name: install (${{ matrix.platform }})
     runs-on: ${{ matrix.os }}
     timeout-minutes: 20
     permissions:
@@ -25,8 +25,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { name: macOS, os: macos-latest, platform: macos }
-          - { name: Ubuntu, os: ubuntu-latest, platform: ubuntu }
+          - { os: macos-latest, platform: macos }
+          - { os: ubuntu-latest, platform: ubuntu }
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -101,7 +101,7 @@ jobs:
   # commits, so this runs weekly (and on demand: `gh workflow run install.yml --ref <branch>` after editing a package
   # list) instead of on every pull request, where the jobs above already cover the portable checks.
   packages:
-    name: Packages on ${{ matrix.name }}
+    name: packages (${{ matrix.platform }})
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ${{ matrix.os }}
     timeout-minutes: ${{ matrix.timeout }}
@@ -111,8 +111,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { name: macOS, os: macos-latest, platform: macos, timeout: 45 }
-          - { name: Ubuntu, os: ubuntu-latest, platform: ubuntu, timeout: 20 }
+          - { os: macos-latest, platform: macos, timeout: 45 }
+          - { os: ubuntu-latest, platform: ubuntu, timeout: 20 }
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:

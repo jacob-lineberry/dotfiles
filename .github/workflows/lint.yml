@@ -1,4 +1,4 @@
-name: Lint & Security
+name: lint
 
 on:
   push:
@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   hooks:
-    name: Pre-commit hooks
+    name: pre-commit
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -40,12 +40,15 @@ jobs:
           path: ~/.cache/pre-commit
           key: pre-commit-${{ runner.os }}-${{ hashFiles('.pre-commit-config.yaml') }}
 
-      # Same config as the local hook (.pre-commit-config.yaml)
+      # Same config as the local hook (.pre-commit-config.yaml). zizmor has its own workflow,
+      # which also runs the online audits that need a token.
       - name: pre-commit
+        env:
+          SKIP: zizmor
         run: pre-commit run --all-files --show-diff-on-failure
 
   secrets:
-    name: Secret scan (full history)
+    name: gitleaks
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
