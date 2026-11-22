@@ -21,3 +21,7 @@ mise.local.toml
 .mise.local.toml
 mise.local.lock
 .mise/locks/mise.local/
+# Editor and agent state that is never project config
+.idea/
+.vscode/
+.claude/settings.local.json
